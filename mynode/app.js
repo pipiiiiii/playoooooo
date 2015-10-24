@@ -4,16 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var ejs = ejs = require('ejs');
+var nunjucks = require('nunjucks');
+// var ejs = require('ejs');
+
+var app = express();
+nunjucks.configure(path.join(__dirname, 'views'), {
+    autoescape: true,
+    express: app,
+    watch: true
+});
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var app = express();
-
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.engine('.html', ejs.__express);
+// app.set('views', path.join(__dirname, 'views'));
+// app.engine('.html', ejs.__express);
 app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
