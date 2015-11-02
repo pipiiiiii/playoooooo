@@ -1,10 +1,17 @@
-.hello{
-	transition: all 1s ease-out;
-	-webkit-transition: all 1s ease-out;
-	position: relative;
-	left: 0;
-	top: 0;
+#tree{
+	width: 100%;
+	height: 100%;
+	position: absolute;
 }
-.hello:hover{
-	font-size: 3rem;
+svg{
+	width: 100%;
+	height: 100%;
+}
+.main-text{
+	position: absolute;
+	left: 50px;
+	bottom: 15px;
+	font-size: 70px;
+	color: #333;
+	margin: 0;
 }
