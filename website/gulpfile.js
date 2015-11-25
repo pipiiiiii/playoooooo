@@ -1,14 +1,17 @@
 var gulp = require('gulp');
+//webpack
 var webpack = require('gulp-webpack');
 var named = require('vinyl-named');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var watchPath = require('gulp-watch-path');
 //css,js 压缩
+var watchPath = require('gulp-watch-path');
 var uglify = require('gulp-uglify'),
     minifycss = require('gulp-minify-css');
 //异常处理
 var notify = require('gulp-notify'),
     plumber = require('gulp-plumber');
+//美化
+var colors = require('colors');
 
 gulp.task('default', function() {
 	return
@@ -24,8 +27,8 @@ gulp.task('vue', function(){
 			.pipe(webpack({
 				module: {
 					loaders: [
-				      { test: /\.vue$/, loader: 'vue'},
-				      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") }
+				        { test: /\.vue$/, loader: 'vue'},
+				        { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader") }
 				    ]
 				},
 			    plugins: [
@@ -52,7 +55,7 @@ gulp.task('vue', function(){
                     .pipe(minifycss())
                     .pipe(gulp.dest(cssPath.distDir))
 
-                console.log( '\033[33m' + cssPath.srcPath + '/\033[39m'+ '文件已经压缩')
+                console.log( cssPath.srcPath.green + '文件已经压缩')
                 return true
             }
             if (/.js$/.test(value)){
@@ -61,7 +64,7 @@ gulp.task('vue', function(){
                     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
                     .pipe(uglify())
                     .pipe(gulp.dest(path.distDir))
-                console.log( '\033[33m' + path.srcPath + '/\033[39m'+ '文件已经压缩')
+                console.log( path.srcPath.green + '文件已经压缩')
                 return true
             }
         })
@@ -80,7 +83,7 @@ gulp.task('minis', function (){
                     .pipe(minifycss())
                     .pipe(gulp.dest(cssPath.distDir))
 
-                console.log( '\033[33m' + cssPath.srcPath + '/\033[39m'+ '文件已经压缩')
+                console.log( cssPath.srcPath.green + '文件已经压缩')
                 return true
             }
             if (/.js$/.test(value)){
@@ -89,7 +92,7 @@ gulp.task('minis', function (){
                     .pipe(plumber({errorHandler: notify.onError('Error: <%= error.message %>')}))
                     .pipe(uglify())
                     .pipe(gulp.dest(path.distDir))
-                console.log( '\033[33m' + path.srcPath + '/\033[39m'+ '文件已经压缩')
+                console.log(path.srcPath.green + '文件已经压缩')
                 return true
             }
         })
