@@ -26,7 +26,7 @@ module.exports = {
   babel: {
     presets: ['es2015'],
     plugins: ['transform-runtime']
-  },
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {
