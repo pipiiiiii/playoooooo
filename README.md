@@ -4,4 +4,4 @@
 
 [play](http://playoooooo.com)
 
-vue+webpack+express
+vue+webpack+gulp+express
