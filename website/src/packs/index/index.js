@@ -9870,8 +9870,8 @@
 			}
 	
 			Tree.prototype.init = function () {
-				var containerWidth = $("#tree").width(),
-				    containerHeight = $("#tree").height();
+				var containerWidth = document.getElementById("tree").offsetWidth,
+				    containerHeight = document.getElementById("tree").offsetHeight;
 	
 				var point = new Point("p0", containerWidth / 2, containerHeight, 0);
 	
