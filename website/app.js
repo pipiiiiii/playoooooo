@@ -39,10 +39,10 @@ app.use('/users', users);
 var wechat = require('wechat');
 
 var config = {
-  token: 'myweixin',
+  token: 'myweixin1',
   encodingAESKey: 'ikd8r4AzBO2o6KZ3b9EKNcvdJHe5fWnQ5fVgwhe7eM3'
 };
-app.use(express.query());
+
 app.use('/wxapp', wechat(config, function(req, res, next){
   var message = req.weixin;
 
