@@ -33,7 +33,8 @@
     "vue-hot-reload-api": "^1.2.1",
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^7.1.2",
-    "webpack": "^1.12.8"
+    "webpack": "^1.12.8",
+    "wechat": "^2.0.3"
   },
   "devDependencies": {
     "gulp": "^3.9.0"
