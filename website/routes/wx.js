@@ -8,14 +8,14 @@ var config = {
   encodingAESKey: 'ikd8r4AzBO2o6KZ3b9EKNcvdJHe5fWnQ5fVgwhe7eM3'
 };
 
-router.post('/', function(req, res, next){
-	wechat(config,function(req, res, next){
-		var message = req.weixin;
+app.all('/', function (req, res, next) {
+  wechat(config, function(req, res, next){
+	  var message = req.weixin;
 
-		if(message){
-			res.reply('success');
-		}
-	})
+	  if(message){
+	    res.reply('success');
+	  }
+})
 });
 
 /*router.get('/', function(req, res, next){
