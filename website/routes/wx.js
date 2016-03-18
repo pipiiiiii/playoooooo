@@ -8,7 +8,7 @@ var config = {
   encodingAESKey: 'ikd8r4AzBO2o6KZ3b9EKNcvdJHe5fWnQ5fVgwhe7eM3'
 };
 
-app.all('/', function (req, res, next) {
+router.all('/', function (req, res, next) {
   wechat(config, function(req, res, next){
 	  var message = req.weixin;
 
