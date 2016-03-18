@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'src')));
 app.use('/', routes);
 app.use('/users', users);
 /*wx*/
+app.use(express.query())
 app.use('/wxapp', wxapp);
 
 // catch 404 and forward to error handler
