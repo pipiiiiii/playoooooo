@@ -35,23 +35,6 @@ app.use(express.static(path.join(__dirname, 'src')));
 app.use('/', routes);
 app.use('/users', users);
 /*wx*/
-/*var wechat = require('wechat');
-
-var config = {
-  token: 'myweixin',
-  appid: 'wxbd50e5ea1bb8b9e4',
-  encodingAESKey: 'ikd8r4AzBO2o6KZ3b9EKNcvdJHe5fWnQ5fVgwhe7eM3'
-};
-
-app.use(express.query())
-app.use('/wxapp', wechat(config, function(req, res, next){
-  var message = req.weixin;
-
-  if(message){
-    res.reply('success');
-  }
-}));*/
-
 app.use('/wxapp',wxapp)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
