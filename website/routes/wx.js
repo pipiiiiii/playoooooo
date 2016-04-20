@@ -16,9 +16,9 @@ router.all('/', wechat(config, function(req, res, next) {
   }
 }));
 
-/*router.get('/', function(req, res, next){
+router.get('/cms', function(req, res, next){
 	res.render('wxapp/index', { title: 'Creating' });
 })
-*/
+
 
 module.exports = router;

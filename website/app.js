@@ -30,7 +30,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'src')));
+app.use('/static', express.static('src'));
 
 app.use('/', routes);
 app.use('/users', users);
