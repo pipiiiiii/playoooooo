@@ -16,20 +16,47 @@ router.all('/', wechat(config, function(req, res, next) {
     res.reply('success');
   }
 }));
-
+// 数据库
 var db = mongoose.connect('mongodb://wx:123456@127.0.0.1:27017/wx');
 
 var wxSchema = new mongoose.Schema({
-	wxId: String
+	wxId: String,
+	className: String,
+	student: String
 })
-var wxModel = db.model("WeiXin",wxSchema);
 
 router.get('/cms', function(req, res, next){
 
-	var wxEntity = new wxModel({wxId: "id23"});
+	var wxModel = db.model("WeiXin",wxSchema);
+	wxModel.find({
+		className: "javascript"
+	}).where("student")
+	  .in(['张三','小明'])
+	  .exec(function(err, result){
+	  	Array.prototype.slice.call(result);
+		return res.render('wxapp/index', {
+			title: "管理界面",
+			data: {
+				content: err || result
+			}
+		})
+	})
+	
+	/*var studentInfo = {
+		wxId: "id_4",
+		className: "javascript",
+		student: "小明"
+	}
+
+	var wxEntity = new wxModel(studentInfo);
 	wxEntity.save()
 
-	res.render('wxapp/index', { title: 'Creating' });
+	res.render('wxapp/index', { 
+		title: 'Creating',
+		data: {
+			content: 1
+		}
+	});*/
 })
 
 

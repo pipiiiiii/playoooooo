@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block main %}
-	<p>To be continued...</p>
+	{% for item in data.content %}
+	<p>姓名：<span>{{ item.student }}</span>课程名:{{ item.className }}</p>
+	{% endfor %}
 	<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
 	  Button
 	</button>
