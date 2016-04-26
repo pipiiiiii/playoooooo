@@ -35,11 +35,11 @@ gulp.task('vue', function(){
 					new ExtractTextPlugin(path.distFilename.split('.')[0] + '.css')
 					// new webpack.optimize.UglifyJsPlugin()
 				],
-				devtool: 'source-map',
-				babel: {
-				    presets: ['es2015'],
-				    plugins: ['transform-runtime']
-				}
+				devtool: 'source-map'
+				// babel: {
+				//     presets: ['es2015'],
+				//     plugins: ['transform-runtime']
+				// }
 			}))
 			.pipe(gulp.dest(path.distDir));
 	})

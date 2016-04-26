@@ -1,19 +1,30 @@
 {% extends "../base.html" %}
 
 {% block css %}
-<link href="/static/css/lib/bootstrap.css" rel="stylesheet">
 <link href="/static/css/lib/material.css" rel="stylesheet">
 {% endblock %}
 
 {% block main %}
-	{% for item in data.content %}
-	<p>姓名：<span>{{ item.student }}</span>课程名:{{ item.className }}</p>
-	{% endfor %}
-	<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-	  Button
-	</button>
+	<div class="mdl-layout__container mdl-layout mdl-layout--fixed-drawer mdl-js-layout" id="wx">
+		<div class="mdl-layout__drawer">
+			<div class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+					<div class="mdl-layout-title">欢迎，张三</div>
+				</div>
+			</div>
+			<div class="mdl-navigation">
+				<a v-link="{path: '/', exact: true}" class="mdl-navigation__link"><i class="material-icons">account_box</i>&nbsp;&nbsp;&nbsp;公众号设置</a>
+				<a v-link="{path: '/manage'}" class="mdl-navigation__link"><i class="material-icons">assignment</i>&nbsp;&nbsp;&nbsp;功能管理</a>
+				<a v-link="{path: '/message'}" class="mdl-navigation__link"><i class="material-icons">mail</i>&nbsp;&nbsp;&nbsp;消息查看</a>
+			</div>
+		</div>
+		<div class="mdl-layout__content mdl-color--grey-200">
+			<router-view></router-view>
+		</div>
+	</div>
 {% endblock %}
 
 {% block js %}
 <script src="/static/js/lib/material.js"></script>
+<script src="/static/packs/wxapp/wxapp.js"></script>
 {% endblock %}
