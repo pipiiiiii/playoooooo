@@ -67,7 +67,7 @@
 	.bind-form p{
 		margin: 20px auto;
 	}
-	.mdl-tooltip{
+	.bind-dialog .mdl-tooltip{
 		position: absolute;
 		top: 52px;
 		left: 0px;
@@ -81,9 +81,9 @@
 			<p>您还未设置公众号信息，请先设置信息</p>
 			<button class="mdl-botton mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" v-on:click="changeDialog">点击设置信息</button>
 		</div>
-		<div class="bind-dialog" v-if="shown">
+		<div class="bind-dialog" v-show="shown">
 			<div class="bind-wrap">
-				<dialog class="bind-form mdl-dialog" v-bind:class="{'translate0':shown}">
+				<dialog class="bind-form mdl-dialog">
 					<i class="material-icons close" v-on:click="changeDialog">close</i>
 					<form>
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -106,7 +106,7 @@
 					<div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" v-show="loading"></div>
 					<p v-show="url">您的链接已生成：{{url}}</p>
 				</dialog>
-				<dialog class="bind-help mdl-dialog" v-bind:class="{'translate0':shown}">
+				<dialog class="bind-help mdl-dialog">
 					<i class="material-icons close" v-on:click="changeDialog">close</i>
 					<h3>使用说明</h3>
 					<p class="">1.前往<a href="https://mp.weixin.qq.com/" target="_blank">https://mp.weixin.qq.com/</a>注册公众账号</p>
@@ -153,7 +153,17 @@
 				isTure.key = this.key != '' ? false : true;
 
 				if (this.appid != '' && this.token != '' && this.key != ''){
-					this.loading = true
+					this.loading = true;
+					function showLoading(obj){
+						obj.loading = !obj.loading;
+						obj.url = window.location.href + obj.appid
+					}
+					function _show(obj){
+						return function(){
+							showLoading(obj)
+						}
+					}
+					setTimeout(_show(this),3000)
 				}		
 			}
 		}

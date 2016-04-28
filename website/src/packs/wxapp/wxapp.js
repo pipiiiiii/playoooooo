@@ -58,8 +58,8 @@
 	var Vue = __webpack_require__(9);
 	var Bind = __webpack_require__(11)
 	var Manage = __webpack_require__(16);
-	var Message = __webpack_require__(19);
-	var VueRouter = __webpack_require__(22);
+	var Message = __webpack_require__(21);
+	var VueRouter = __webpack_require__(24);
 	
 	function init(){
 		Vue.use(VueRouter);
@@ -9876,7 +9876,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".bind-content{\n\t\tposition: absolute;\n\t\ttop: 50%;\n\t\tleft: 50%;\n\t\twidth: 300px;\n\t\theight: 300px;\n\t\tmargin-top: -150px;\n\t\tmargin-left: -150px;\n\t\tpadding-top: 60px;\n\t}\n\t.bind-content p{\n\t\ttext-align: center;\n\t}\n\t.bind-content button{\n\t\tborder: none;\n\t\tdisplay: block;\n\t\tposition: relative;\n\t\tmargin: 50px auto;\n\t\twidth: 100px;\n\t\theight: 40px;\n\t}\n\t.bind-dialog{\n\t\tposition: absolute;\n\t\twidth: 100%;\n\t\theight: 100%;\n\t\tz-index: 10;\n\t\tbackground-color: rgba(0,0,0,0.5);\n\t}\n\t.bind-wrap{\n\t\tposition: relative;\n\t\twidth: 900px;\n\t\theight: 600px;\n\t\ttop: 50%;\n\t\tmargin: -300px auto 0;\n\t}\n\t.bind-form,.bind-help{\n\t\tposition: relative;\n\t\tdisplay: inline-block;\n\t\tvertical-align: top;\n\t\twidth: 300px;\n\t\theight: 600px;\n\t\tmargin: 0 50px 0 50px;\n\t\tz-index: 11;\n\t\tbackground-color: #fff;\n\t\tborder-radius: 10px;\n\t}\n\t.bind-wrap .close{\n\t\tposition: absolute;\n\t\ttop: 5px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n\t}\n\t.bind-form form{\n\t\tmargin-top: 60px;\n\t}\n\t.mdl-textfield{\n\t\tmargin: 15px auto;\n\t}\n\t.bind-help h3{\n\t\ttext-align: center;\n\t}\n\t.bind-form button{\n\t\tdisplay: block;\n\t\tmargin: 20px auto;\n\t}\n\t.bind-form p{\n\t\tmargin: 20px auto;\n\t}\n\t.mdl-tooltip{\n\t\tposition: absolute;\n\t\ttop: 52px;\n\t\tleft: 0px;\n\t\t-webkit-transform: scale(1);\n\t\t    -ms-transform: scale(1);\n\t\t        transform: scale(1);\n\t}", ""]);
+	exports.push([module.id, ".bind-content{\n\t\tposition: absolute;\n\t\ttop: 50%;\n\t\tleft: 50%;\n\t\twidth: 300px;\n\t\theight: 300px;\n\t\tmargin-top: -150px;\n\t\tmargin-left: -150px;\n\t\tpadding-top: 60px;\n\t}\n\t.bind-content p{\n\t\ttext-align: center;\n\t}\n\t.bind-content button{\n\t\tborder: none;\n\t\tdisplay: block;\n\t\tposition: relative;\n\t\tmargin: 50px auto;\n\t\twidth: 100px;\n\t\theight: 40px;\n\t}\n\t.bind-dialog{\n\t\tposition: absolute;\n\t\twidth: 100%;\n\t\theight: 100%;\n\t\tz-index: 10;\n\t\tbackground-color: rgba(0,0,0,0.5);\n\t}\n\t.bind-wrap{\n\t\tposition: relative;\n\t\twidth: 900px;\n\t\theight: 600px;\n\t\ttop: 50%;\n\t\tmargin: -300px auto 0;\n\t}\n\t.bind-form,.bind-help{\n\t\tposition: relative;\n\t\tdisplay: inline-block;\n\t\tvertical-align: top;\n\t\twidth: 300px;\n\t\theight: 600px;\n\t\tmargin: 0 50px 0 50px;\n\t\tz-index: 11;\n\t\tbackground-color: #fff;\n\t\tborder-radius: 10px;\n\t}\n\t.bind-wrap .close{\n\t\tposition: absolute;\n\t\ttop: 5px;\n\t\tright: 5px;\n\t\tcursor: pointer;\n\t}\n\t.bind-form form{\n\t\tmargin-top: 60px;\n\t}\n\t.mdl-textfield{\n\t\tmargin: 15px auto;\n\t}\n\t.bind-help h3{\n\t\ttext-align: center;\n\t}\n\t.bind-form button{\n\t\tdisplay: block;\n\t\tmargin: 20px auto;\n\t}\n\t.bind-form p{\n\t\tmargin: 20px auto;\n\t}\n\t.bind-dialog .mdl-tooltip{\n\t\tposition: absolute;\n\t\ttop: 52px;\n\t\tleft: 0px;\n\t\t-webkit-transform: scale(1);\n\t\t    -ms-transform: scale(1);\n\t\t        transform: scale(1);\n\t}", ""]);
 	
 	// exports
 
@@ -9911,13 +9911,30 @@
 				this.shown = !this.shown;
 			},
 			getUrl: function getUrl() {
+				var _this = this;
+	
 				var isTure = this.isTure;
 				isTure.appid = this.appid != '' ? false : true;
 				isTure.token = this.token != '' ? false : true;
 				isTure.key = this.key != '' ? false : true;
 	
 				if (this.appid != '' && this.token != '' && this.key != '') {
-					this.loading = true;
+					(function () {
+						var showLoading = function showLoading(obj) {
+							obj.loading = !obj.loading;
+							obj.url = window.location.href + obj.appid;
+						};
+	
+						var _show = function _show(obj) {
+							return function () {
+								showLoading(obj);
+							};
+						};
+	
+						_this.loading = true;
+	
+						setTimeout(_show(_this), 3000);
+					})();
 				}
 			}
 		}
@@ -9929,16 +9946,17 @@
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = "<div id=\"bind\">\n\t\t<div class=\"bind-content\">\n\t\t\t<p>您还未设置公众号信息，请先设置信息</p>\n\t\t\t<button class=\"mdl-botton mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect\" v-on:click=\"changeDialog\">点击设置信息</button>\n\t\t</div>\n\t\t<div class=\"bind-dialog\" v-if=\"shown\">\n\t\t\t<div class=\"bind-wrap\">\n\t\t\t\t<dialog class=\"bind-form mdl-dialog\" v-bind:class=\"{'translate0':shown}\">\n\t\t\t\t\t<i class=\"material-icons close\" v-on:click=\"changeDialog\">close</i>\n\t\t\t\t\t<form>\n\t\t\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n\t\t\t\t\t\t\t<label class=\"mdl-textfield__label\" for=\"appid\" v-bind:class=\"{'mdl-color-text--red-500':isTure.appid}\">AppID</label>\n\t\t\t\t\t\t\t<input class=\"mdl-textfield__input\" type=\"text\" id=\"appid\" v-model=\"appid\" />\n\t\t\t\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isTure.appid\">请输入AppID</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n\t\t\t\t\t\t\t<label class=\"mdl-textfield__label\" for=\"token\" v-bind:class=\"{'mdl-color-text--red-500':isTure.token}\">token</label>\n\t\t\t\t\t\t\t<input class=\"mdl-textfield__input\" type=\"text\" id=\"token\" v-model=\"token\" />\n\t\t\t\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isTure.token\">请输入token</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n\t\t\t\t\t\t\t<label class=\"mdl-textfield__label\" for=\"key\" v-bind:class=\"{'mdl-color-text--red-500':isTure.key}\">EncodingAESKey</label>\n\t\t\t\t\t\t\t<input class=\"mdl-textfield__input\" type=\"text\" id=\"key\" v-model=\"key\" />\n\t\t\t\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isTure.key\">请输入Key</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</form>\n\t\t\t\t\t<button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\" v-on:click=\"getUrl\">生成链接</button>\n\t\t\t\t\t<div id=\"p2\" class=\"mdl-progress mdl-js-progress mdl-progress__indeterminate\" v-show=\"loading\"></div>\n\t\t\t\t\t<p v-show=\"url\">您的链接已生成：{{url}}</p>\n\t\t\t\t</dialog>\n\t\t\t\t<dialog class=\"bind-help mdl-dialog\" v-bind:class=\"{'translate0':shown}\">\n\t\t\t\t\t<i class=\"material-icons close\" v-on:click=\"changeDialog\">close</i>\n\t\t\t\t\t<h3>使用说明</h3>\n\t\t\t\t\t<p class=\"\">1.前往<a href=\"https://mp.weixin.qq.com/\" target=\"_blank\">https://mp.weixin.qq.com/</a>注册公众账号</p>\n\t\t\t\t\t<p>2.登录后在左侧开发标签中选择基本设置</p>\n\t\t\t\t\t<p>3.将AppID填入左侧表单中</p>\n\t\t\t\t\t<p>4.在服务器配置中设置token和EncodingAESKey,并填入左侧表单中</p>\n\t\t\t\t\t<p>5.点击生成连接按钮</p>\n\t\t\t\t\t<p>6.将生成的连接复制到设置页面的URL地址中</p>\n\t\t\t\t\t<p>7.点击提交</p>\n\t\t\t\t</dialog>\n\t\t\t</div>\n\t\t</div>\n\t</div>";
+	module.exports = "<div id=\"bind\">\n\t\t<div class=\"bind-content\">\n\t\t\t<p>您还未设置公众号信息，请先设置信息</p>\n\t\t\t<button class=\"mdl-botton mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect\" v-on:click=\"changeDialog\">点击设置信息</button>\n\t\t</div>\n\t\t<div class=\"bind-dialog\" v-show=\"shown\">\n\t\t\t<div class=\"bind-wrap\">\n\t\t\t\t<dialog class=\"bind-form mdl-dialog\">\n\t\t\t\t\t<i class=\"material-icons close\" v-on:click=\"changeDialog\">close</i>\n\t\t\t\t\t<form>\n\t\t\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n\t\t\t\t\t\t\t<label class=\"mdl-textfield__label\" for=\"appid\" v-bind:class=\"{'mdl-color-text--red-500':isTure.appid}\">AppID</label>\n\t\t\t\t\t\t\t<input class=\"mdl-textfield__input\" type=\"text\" id=\"appid\" v-model=\"appid\" />\n\t\t\t\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isTure.appid\">请输入AppID</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n\t\t\t\t\t\t\t<label class=\"mdl-textfield__label\" for=\"token\" v-bind:class=\"{'mdl-color-text--red-500':isTure.token}\">token</label>\n\t\t\t\t\t\t\t<input class=\"mdl-textfield__input\" type=\"text\" id=\"token\" v-model=\"token\" />\n\t\t\t\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isTure.token\">请输入token</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield mdl-textfield--floating-label\">\n\t\t\t\t\t\t\t<label class=\"mdl-textfield__label\" for=\"key\" v-bind:class=\"{'mdl-color-text--red-500':isTure.key}\">EncodingAESKey</label>\n\t\t\t\t\t\t\t<input class=\"mdl-textfield__input\" type=\"text\" id=\"key\" v-model=\"key\" />\n\t\t\t\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isTure.key\">请输入Key</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</form>\n\t\t\t\t\t<button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\" v-on:click=\"getUrl\">生成链接</button>\n\t\t\t\t\t<div id=\"p2\" class=\"mdl-progress mdl-js-progress mdl-progress__indeterminate\" v-show=\"loading\"></div>\n\t\t\t\t\t<p v-show=\"url\">您的链接已生成：{{url}}</p>\n\t\t\t\t</dialog>\n\t\t\t\t<dialog class=\"bind-help mdl-dialog\">\n\t\t\t\t\t<i class=\"material-icons close\" v-on:click=\"changeDialog\">close</i>\n\t\t\t\t\t<h3>使用说明</h3>\n\t\t\t\t\t<p class=\"\">1.前往<a href=\"https://mp.weixin.qq.com/\" target=\"_blank\">https://mp.weixin.qq.com/</a>注册公众账号</p>\n\t\t\t\t\t<p>2.登录后在左侧开发标签中选择基本设置</p>\n\t\t\t\t\t<p>3.将AppID填入左侧表单中</p>\n\t\t\t\t\t<p>4.在服务器配置中设置token和EncodingAESKey,并填入左侧表单中</p>\n\t\t\t\t\t<p>5.点击生成连接按钮</p>\n\t\t\t\t\t<p>6.将生成的连接复制到设置页面的URL地址中</p>\n\t\t\t\t\t<p>7.点击提交</p>\n\t\t\t\t</dialog>\n\t\t\t</div>\n\t\t</div>\n\t</div>";
 
 /***/ },
 /* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(17)
+	__webpack_require__(17)
+	module.exports = __webpack_require__(19)
 	
 	if (module.exports.__esModule) module.exports = module.exports.default
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(18)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(20)
 	if (false) {
 	(function () {
 	var hotAPI = require("vue-hot-reload-api")
@@ -9957,28 +9975,129 @@
 
 /***/ },
 /* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(18);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(8)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-fb669a6c&file=manage.vue!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./manage.vue", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/vue-loader/lib/style-rewriter.js?id=_v-fb669a6c&file=manage.vue!./../../../node_modules/vue-loader/lib/selector.js?type=style&index=0!./manage.vue");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(7)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".manage-wrap{\n\t\tposition: absolute;\n\t\twidth: 650px;\n\t\theight: 400px;\n\t\ttop: 50%;\n\t\tleft: 50%;\n\t\tmargin-top: -200px;\n\t\tmargin-left: -325px;\n\t}\n\t.manage-wrap .mdl-checkbox{\n\t\twidth: auto;\n\t\tdisplay: inline-block;\n\t\tvertical-align: middle;\n\t}\n\t.manage-wrap ul li{\n\t\tlist-style: none;\n\t\tposition: relative;\n\t}\n\t.manage-wrap ul li p{\n\t\tdisplay: inline-block;\n\t\tvertical-align: middle;\n\t\tfont-size: 16px;\n\t\tmargin: 0 0 0 50px;\n\t}\n\t.manage-wrap .mdl-textfield{\n\t\tpadding: 23px 0 20px 0;\n\t}\n\t.manage-wrap button{\n\t\tdisplay: block;\n\t\tmargin: 0 auto;\n\t}\n\t.manage-wrap .mdl-tooltip{\n\t\tposition: absolute;\n\t\twidth: 100px;\n\t\ttop: 40px;\n\t\tleft: 615px;\n\t\t-webkit-transform: scale(1);\n\t\t    -ms-transform: scale(1);\n\t\t        transform: scale(1);\n\t}\n\t.manage-dialog{\n\t\tposition: absolute;\n\t\ttop: 50%;\n\t\tleft: 50%;\n\t\tmargin-top: -30px;\n\t\tmargin-left: -65px;\n\t\tpadding: 10px 30px;\n\t\tborder-radius: 5px;\n\t\ttext-align: center;\n\t\tfont-size: 20px;\n\t\topacity: 0;\n\t\t-webkit-transform: translateY(20px);\n\t\t    -ms-transform: translateY(20px);\n\t\t        transform: translateY(20px);\n\t\t-webkit-transition: all 0.3s ease-out;\n\t\ttransition: all 0.3s ease-out;\n\t}\n\t.manage-dialog p{\n\t\tmargin: 0;\n\t}\n\t.manage-dialog.show{\n\t\topacity: 1;\n\t\t-webkit-transform: translateY(0);\n\t\t    -ms-transform: translateY(0);\n\t\t        transform: translateY(0);\n\t}", ""]);
+	
+	// exports
+
+
+/***/ },
+/* 19 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
-	var Manage = {};
+	var Manage = {
+		el: function el() {
+			return '#manage';
+		},
+		data: function data() {
+			return {
+				isCheck: {
+					cl: false,
+					homework: false,
+					score: false
+				},
+				reply: {
+					cl: '',
+					homework: '',
+					score: ''
+				},
+				isInput: {
+					cl: false,
+					homework: false,
+					score: false
+				},
+				saveStatus: false
+			};
+		},
+		methods: {
+			saveData: function saveData() {
+				var _this = this;
+	
+				if (this.checkInput('cl') && this.checkInput('homework') && this.checkInput('score')) {
+					(function () {
+						var saveSuccess = function saveSuccess(obj) {
+							obj.saveStatus = false;
+						};
+	
+						var _saveSuccess = function _saveSuccess(obj) {
+							return function () {
+								saveSuccess(obj);
+							};
+						};
+	
+						_this.saveStatus = true;
+	
+						setTimeout(_saveSuccess(_this), 1000);
+					})();
+				}
+			},
+			setData: function setData() {
+				// console.log(1)
+			},
+			checkInput: function checkInput(tag) {
+				if (this.isCheck[tag] === true) {
+					if (this.reply[tag] != '') {
+						this.isInput[tag] = false;
+					} else {
+						this.isInput[tag] = true;
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+	};
 	
 	module.exports = Manage;
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "<p>Hello!</p>\n\t<p>This is Mange</p>";
+	module.exports = "<div class=\"manage-wrap\" id=\"manage\">\n\t\t<ul>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-class\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-class\" class=\"mdl-checkbox__input\" v-model=\"isCheck.cl\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看课表功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-class\" v-model=\"reply.cl\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-class\">课表</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.cl\">请输入关键字</div>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-homework\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-homework\" class=\"mdl-checkbox__input\" v-model=\"isCheck.homework\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看作业功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-homework\" v-model=\"reply.homework\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-homework\">作业</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.homework\">请输入关键字</div>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-score\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-score\" class=\"mdl-checkbox__input\" v-model=\"isCheck.score\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看成绩功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-score\" v-model=\"reply.score\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-score\">成绩</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.score\">请输入关键字</div>\n\t\t\t</li>\n\t\t</ul>\n\t\t<button class=\"mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect\" v-on:click=\"saveData\">保存</button>\n\t</div>\n\t<div class=\"manage-dialog mdl-color--white\" v-bind:class=\"{'show':saveStatus}\">\n\t\t<p>保存成功！</p>\n\t</div>";
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(20)
+	module.exports = __webpack_require__(22)
 	
 	if (module.exports.__esModule) module.exports = module.exports.default
-	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(21)
+	;(typeof module.exports === "function" ? module.exports.options : module.exports).template = __webpack_require__(23)
 	if (false) {
 	(function () {
 	var hotAPI = require("vue-hot-reload-api")
@@ -9996,7 +10115,7 @@
 	}
 
 /***/ },
-/* 20 */
+/* 22 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10004,13 +10123,13 @@
 	module.exports = {};
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports) {
 
 	module.exports = "<p>Hello!</p>\n\t<p>Message</p>";
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
