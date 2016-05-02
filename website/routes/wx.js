@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var wechat = require('wechat');
 var mongoose = require('./../model/mongoConnect.js');
+
+router.use(bodyParser.json());
 // 绑定相关接口
 var wxInfoScheam = new mongoose.Schema({
 	teacherId: Number,
@@ -18,10 +20,15 @@ var wxInfoScheam = new mongoose.Schema({
 // }));
 var config = {};
 router.all('/interface', function(req, res, next){
+	if (req.query.appid){
+		var param = req.query.appid
+	}else{
+		var param = 1
+	}
 	var appid = req.query.appid;
 	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
 	wxInfoModel.find({
-		appId: appid
+		teacherId: 1
 	}).exec(function(err, result){
 		var data = result[0];
 		console.log(data);
