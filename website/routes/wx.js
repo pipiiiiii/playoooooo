@@ -34,17 +34,16 @@ router.all('/interface/:appid', function(req, res, next){
 				appid: data.appId,
 				encodingAESKey: data.aesKey
 			}
-			next('route');
+			next();
 		}
 	})
-});
-router.all('/interface/:appid', wechat(config, function(req, res, next){
+},wechat(config, function(req, res, next){
 	var message = req.weixin;
 
 	if(message){
 		res.reply('success')
 	}
-}))
+}));
 
 router.get('/cms', function(req, res, next){
 
