@@ -13,11 +13,13 @@ nunjucks.configure(path.join(__dirname, 'views'), {
     express: app,
     watch: true
 });
+// 数据库
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 /*wxapp*/
 var wxapp = require('./routes/wx');
+var wxAjax = require('./routes/wx-ajax');
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +37,8 @@ app.use('/static', express.static('src'));
 app.use('/', routes);
 app.use('/users', users);
 /*wx*/
-app.use('/wxapp',wxapp)
+app.use('/wxapp',wxapp);
+app.use('/wxdata', wxAjax);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

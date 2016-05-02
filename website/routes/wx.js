@@ -1,29 +1,46 @@
 var express = require('express');
 var router = express.Router();
 var wechat = require('wechat');
-var mongoose = require('mongoose');
+var mongoose = require('./../model/mongoConnect.js');
+// 绑定相关接口
+var wxInfoScheam = new mongoose.Schema({
+	teacherId: Number,
+	appId: String,
+	token: String,
+	aesKey: String
+});
+// router.all('/', wechat(config, function(req, res, next) {
+//   var message = req.weixin;
 
-var config = {
-  token: 'myweixin',
-  appid: 'wxbd50e5ea1bb8b9e4',
-  encodingAESKey: 'ikd8r4AzBO2o6KZ3b9EKNcvdJHe5fWnQ5fVgwhe7eM3'
-};
+//   if(message){
+//     res.reply('success');
+//   }
+// }));
+var config = {};
+router.all('/interface', function(req, res, next){
+	var appid = req.query.appid;
+	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
+	wxInfoModel.find({
+		appId: appid
+	}).exec(function(err, result){
+		var data = result[0];
+		console.log(data);
+		if(result.length > 0){
+			config = {
+				token: data.token,
+				appid: data.appId,
+				encodingAESKey: data.aesKey
+			}
+			next();
+		}
+	})
+},wechat(config, function(req, res, next){
+	var message = req.weixin;
 
-router.all('/', wechat(config, function(req, res, next) {
-  var message = req.weixin;
-
-  if(message){
-    res.reply('success');
-  }
+	if(message){
+		res.reply('success')
+	}
 }));
-// 数据库
-// var db = mongoose.connect('mongodb://wx:123456@127.0.0.1:27017/wx');
-
-// var wxSchema = new mongoose.Schema({
-// 	wxId: String,
-// 	className: String,
-// 	student: String
-// })
 
 router.get('/cms', function(req, res, next){
 

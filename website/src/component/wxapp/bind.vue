@@ -86,17 +86,17 @@
 				<dialog class="bind-form mdl-dialog">
 					<i class="material-icons close" v-on:click="changeDialog">close</i>
 					<form>
-						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" v-bind:class="{'is-dirty':isTure.getData}">
 							<label class="mdl-textfield__label" for="appid" v-bind:class="{'mdl-color-text--red-500':isTure.appid}">AppID</label>
 							<input class="mdl-textfield__input" type="text" id="appid" v-model="appid" />
 							<div class="mdl-tooltip" v-show="isTure.appid">请输入AppID</div>
 						</div>
-						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" v-bind:class="{'is-dirty':isTure.getData}">
 							<label class="mdl-textfield__label" for="token" v-bind:class="{'mdl-color-text--red-500':isTure.token}">token</label>
 							<input class="mdl-textfield__input" type="text" id="token" v-model="token" />
 							<div class="mdl-tooltip" v-show="isTure.token">请输入token</div>
 						</div>
-						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" v-bind:class="{'is-dirty':isTure.getData}">
 							<label class="mdl-textfield__label" for="key" v-bind:class="{'mdl-color-text--red-500':isTure.key}">EncodingAESKey</label>
 							<input class="mdl-textfield__input" type="text" id="key" v-model="key" />
 							<div class="mdl-tooltip" v-show="isTure.key">请输入Key</div>
@@ -138,13 +138,25 @@
 				isTure:{
 					appid: false,
 					token: false,
-					key: false
+					key: false,
+					getData: false
 				}
 			}
 		},
 		methods: {
 			changeDialog: function(){
 				this.shown = !this.shown;
+
+				this.$http.get('/wxdata/get-wx-info').then(function(result){
+					var data = result.data[0];
+					if (data){
+						this.isTure.getData = true;
+						this.appid = data.appId;
+						this.token = data.token;
+						this.key = data.aesKey;
+						this.$nextTick(componentHandler.upgradeAllRegistered)
+					}
+				})
 			},
 			getUrl: function(){
 				var isTure = this.isTure;
@@ -154,16 +166,20 @@
 
 				if (this.appid != '' && this.token != '' && this.key != ''){
 					this.loading = true;
-					function showLoading(obj){
-						obj.loading = !obj.loading;
-						obj.url = window.location.href + obj.appid
-					}
-					function _show(obj){
-						return function(){
-							showLoading(obj)
+					this.$http.post('/wxdata/save-wx-info',{
+						data: {
+							teacherId: 1,
+							appid: this.appid,
+							token: this.token,
+							key: this.key
 						}
-					}
-					setTimeout(_show(this),3000)
+					}).then(function(result){
+						console.log(this)
+						if(result.ok){
+							this.loading = false;
+							this.url = "www.playoooooo.com/wxapp?" + this.appid
+						}
+					})
 				}		
 			}
 		}
