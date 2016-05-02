@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var wechat = require('wechat');
 var mongoose = require('./../model/mongoConnect.js');
+var bodyParser = require('body-parser');
 
 router.use(bodyParser.json());
 // 绑定相关接口
