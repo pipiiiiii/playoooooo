@@ -20,16 +20,11 @@ var wxInfoScheam = new mongoose.Schema({
 //   }
 // }));
 var config = {};
-router.all('/interface', function(req, res, next){
-	if (req.query.appid){
-		var param = req.query.appid
-	}else{
-		var param = 1
-	}
-	var appid = req.query.appid;
+router.all('/interface/:appid', function(req, res, next){
+	var appid = req.params.appid;
 	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
 	wxInfoModel.find({
-		teacherId: 1
+		appId: appid
 	}).exec(function(err, result){
 		var data = result[0];
 		console.log(data);
