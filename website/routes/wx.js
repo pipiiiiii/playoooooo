@@ -23,21 +23,22 @@ var token = '';
 router.all('/interface/:appid', function(req, res, next){
 	var appid = req.params.appid;
 	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
-	wxInfoModel.find({
-		appId: appid
-	}).exec(function(err, result){
-		var data = result[0];
-		console.log(data);
-		if(result.length > 0){
-			// config = {
-			// 	token: data.token,
-			// 	appid: data.appId,
-			// 	encodingAESKey: data.aesKey
-			// }
-			token = data.token
-			next('route');
-		}
-	})
+	// wxInfoModel.find({
+	// 	appId: appid
+	// }).exec(function(err, result){
+	// 	var data = result[0];
+	// 	console.log(data);
+	// 	if(result.length > 0){
+	// 		// config = {
+	// 		// 	token: data.token,
+	// 		// 	appid: data.appId,
+	// 		// 	encodingAESKey: data.aesKey
+	// 		// }
+	// 		token = data.token
+	// 		next('route');
+	// 	}
+	// })
+	token = 'myweixin'
 });
 router.all('/interface/:appid', wechat(token, function(req, res, next){
 	var message = req.weixin;
