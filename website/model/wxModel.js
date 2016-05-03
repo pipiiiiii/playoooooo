@@ -1,4 +1,4 @@
-var mongoose = require('./../model/mongoConnect.js');
+var mongoose = require('./mongoConnect.js');
 
 // 公众号基本信息Scheam
 var wxInfoScheam = new mongoose.Schema({
