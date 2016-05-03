@@ -7,8 +7,10 @@ var token = '';
 router.use('/interface/:appid', function(req, res, next){
 	var appid = req.params.appid;
 	
-	req.wechat_token = wxModel.getToken(appid);
-	next();
+	wxModel.getToken(appid, function(token){
+		req.wechat_token = token;
+		next();
+	})
 });
 router.use('/interface/:appid', wechat(token)
   .text(function (message, req, res, next) {

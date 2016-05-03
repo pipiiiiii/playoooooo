@@ -8,20 +8,29 @@ var wxInfoScheam = new mongoose.Schema({
 	aesKey: String
 });
 
-var wxModel = {
-	getToken: function(appid){
-		var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
-
-		wxInfoModel.find({
-			appId: appid
-		}).exec(function(err, result){
-			if (result.length > 0){
-				var data = result[0];
-
-				return data.token
-			}
-		})
-	}
+// var wxModel = {
+// 	getToken: function(appid){
+// 		
+// 	}
+// }
+function WxModel(){
+	this.token = ''
 }
 
-module.exports = wxModel;
+WxModel.prototype.getToken = function(appid, callback){
+	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam),
+	    token = '',
+		self = this;
+	wxInfoModel.find({
+		appId: appid
+	}, function(err, result){
+		if (result.length > 0){
+			var data = result[0];
+			callback(data.token)
+		}else{
+			return
+		}
+	})
+}
+
+module.exports = new WxModel;
