@@ -41,7 +41,12 @@ router.use('/interface/:appid', function(req, res, next){
 });
 router.use('/interface/:appid', wechat(token)
   .text(function (message, req, res, next) {
-    res.reply(message.content)
+  	var message = req.weixin;
+  	if (message){
+  		res.reply(message)
+  	}else{
+  		res.reply('error')
+  	}
   }).middlewarify())
 
 router.get('/cms', function(req, res, next){
