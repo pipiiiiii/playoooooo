@@ -34,8 +34,8 @@ router.use('/interface/:appid', function(req, res, next){
 			// 	appid: data.appId,
 			// 	encodingAESKey: data.aesKey
 			// }
-			token = data.token
-			next('route');
+			req.wechat_token = data.token
+			next();
 		}
 	})
 });
