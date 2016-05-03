@@ -41,7 +41,7 @@ router.use('/interface/:appid', function(req, res, next){
 });
 router.use('/interface/:appid', wechat(token)
   .text(function (message, req, res, next) {
-    res.reply(message)
+    res.reply(message.content)
   }).middlewarify())
 
 router.get('/cms', function(req, res, next){
