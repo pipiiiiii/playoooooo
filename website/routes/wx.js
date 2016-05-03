@@ -22,7 +22,7 @@ var wxInfoScheam = new mongoose.Schema({
 var token = '';
 router.use('/interface/:appid', function(req, res, next){
 	var appid = req.params.appid;
-	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
+	// var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam);
 	// wxInfoModel.find({
 	// 	appId: appid
 	// }).exec(function(err, result){
@@ -39,7 +39,7 @@ router.use('/interface/:appid', function(req, res, next){
 	// 	}
 	// })
 	token = 'myweixin'
-	next();
+	next('route');
 });
 router.use('/interface/:appid', wechat(token, function(req, res, next){
 	var message = req.weixin;
