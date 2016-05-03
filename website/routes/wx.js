@@ -43,7 +43,7 @@ router.use('/interface/:appid', wechat(token)
   .text(function (message, req, res, next) {
   	var message = req.weixin;
   	if (message){
-  		res.reply(message.content)
+  		res.reply(message.Content)
   	}else{
   		res.reply('error')
   	}
