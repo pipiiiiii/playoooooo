@@ -8,11 +8,6 @@ var wxInfoScheam = new mongoose.Schema({
 	aesKey: String
 });
 
-// var wxModel = {
-// 	getToken: function(appid){
-// 		
-// 	}
-// }
 function WxModel(){
 	this.token = ''
 }

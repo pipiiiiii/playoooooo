@@ -1,0 +1,16 @@
+{% extends "../base.html" %}
+
+{% block css %}
+<link href="/static/css/lib/material.css" rel="stylesheet">
+{% endblock %}
+
+{% block main %}
+	<div class="mdl-layout__container mdl-layout mdl-js-layout mdl-color--grey-200">
+		<login></login>
+	</div>
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/lib/material.js"></script>
+<script src="/static/packs/wxapp/login.js"></script>
+{% endblock %}

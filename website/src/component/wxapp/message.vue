@@ -9,7 +9,7 @@
 	#add-reply{
 		position: absolute;
 		top: 10px;
-		left: 30px;
+		left: 0px;
 	}
 	.message-wrap ul{
 		-webkit-padding-start: 0px;
@@ -17,7 +17,7 @@
 	}
 	.message-wrap ul li{
 		display: inline-block;
-		margin: 10px 30px;
+		margin: 10px 20px 10px 0;
 		list-style: none;
 	}
 	.message-wrap ul li span{
@@ -35,7 +35,10 @@
 		position: relative;
 		display: block;
 		width: 100%;
-		padding: 0 30px;
+		padding: 0;
+	}
+	.table-wrap ul li{
+		margin: 10px 20px;
 	}
 	.table-wrap .mdl-data-table{
 		position: relative;
@@ -66,10 +69,10 @@
 			<li v-for="item in classifyList">
 				<span>设置回复前缀：</span>
 				<div class="mdl-textfield mdl-js-textfield">
-				    <input class="mdl-textfield__input" type="text" v-bind:id="'reply' + $index">
+				    <input class="mdl-textfield__input" type="text" v-bind:id="'reply' + $index" v-model="item.name">
 				    <label class="mdl-textfield__label" v-bind:for="'reply' + $index">{{item.name}}</label>
 				</div>
-				<span class="mdl-color-text--grey-700" v-bind:id="'classify-save-' + $index"><i class="material-icons">save</i></span>
+				<span class="mdl-color-text--grey-700" v-on:click="saveClassify($index)"><i class="material-icons" v-bind:id="'classify-save-' + $index">save</i></span>
 				<span class="mdl-color-text--grey-700" v-on:click="deleteClassify($index)"><i class="material-icons" v-bind:id="'classify-delete-' + $index">delete</i></span>
 				<div class="mdl-tooltip" v-bind:for="'classify-save-' + $index">保存</div>
 				<div class="mdl-tooltip" v-bind:for="'classify-delete-' + $index">删除</div>
@@ -88,32 +91,18 @@
 								<i class="material-icons">keyboard_arrow_down</i>
 							</button>
 							<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-right">
-							  	<li class="mdl-menu__item mdl-menu__item--full-bleed-divider">课程1</li>
-							  	<li class="mdl-menu__item mdl-menu__item--full-bleed-divider">课程2</li>
-							  	<li class="mdl-menu__item mdl-menu__item--full-bleed-divider">课程3</li>
-							  	<li class="mdl-menu__item mdl-menu__item--full-bleed-divider">课程4</li>
+							  	<li class="mdl-menu__item mdl-menu__item--full-bleed-divider" v-on:click="getMessage('all')">全部</li>
+							  	<li class="mdl-menu__item mdl-menu__item--full-bleed-divider" v-for="item in classifyList" v-on:click="getMessage(item.name)">{{item.name}}</li>
 							</ul>
 					    </th>
 				    </tr>
 			  	</thead>
 			  	<tbody>
-			    	<tr>
-			      		<td class="mdl-data-table__cell--non-numeric">小明</td>
-			      		<td class="mdl-data-table__cell--non-numeric">12108080</td>
-			      		<td class="mdl-data-table__cell--non-numeric">老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好!</td>
-			      		<td class="mdl-data-table__cell--non-numeric">闲聊</td>
-			    	</tr>
-			    	<tr>
-			      		<td class="mdl-data-table__cell--non-numeric">小明</td>
-			      		<td class="mdl-data-table__cell--non-numeric">12108080</td>
-			      		<td class="mdl-data-table__cell--non-numeric">老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！</td>
-			      		<td class="mdl-data-table__cell--non-numeric">闲聊</td>
-			    	</tr>
-			    	<tr>
-			      		<td class="mdl-data-table__cell--non-numeric">小明</td>
-			      		<td class="mdl-data-table__cell--non-numeric">12108080</td>
-			      		<td class="mdl-data-table__cell--non-numeric">老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！</td>
-			      		<td class="mdl-data-table__cell--non-numeric">闲聊</td>
+			    	<tr v-for="item in messages">
+			      		<td class="mdl-data-table__cell--non-numeric">{{item.name}}</td>
+			      		<td class="mdl-data-table__cell--non-numeric">{{item.schoolNum}}</td>
+			      		<td class="mdl-data-table__cell--non-numeric">{{item.content}}</td>
+			      		<td class="mdl-data-table__cell--non-numeric">{{item.classify}}</td>
 			    	</tr>
 			  	</tbody>
 			</table>
@@ -122,28 +111,74 @@
 </template>
 
 <script>
-	var testData = [{name: "课程1"},{name: "课程2"}]
 	var Message = {
 		el: function(){
 			return '#message'
 		},
 		data: function(){
 			return {
-				classifyList: testData
+				classifyList: [],
+				messages: []
 			}
 		},
 		methods: {
 			addClassify: function(){
-				testData.push({name: "课程3"});
+				this.classifyList.push({name: "课程3"});
+				this.$nextTick(componentHandler.upgradeAllRegistered);
+			},
+			saveClassify: function(){
+				var data = {
+					key: []
+				};
+				var length = this.classifyList.length;
+				for (var i = 0; i < length; i++){
+					data.key.push(this.classifyList[i].name)
+				}
+				this.$http.post('/wxdata/save-reply-key', {data:data})
+						  .then(function(result){
+						  	if(result.ok){
+						  		console.log("success")
+						  	}
+						  })
+			},
+			deleteClassify: function(index){
+				this.classifyList.splice(index, 1)
+				this.saveClassify();
+			},
+			getClassify: function(callback){
+				this.$http.get('/wxdata/get-reply-key').then(function(result){
+					if(result.data.length > 0){
+						var data = result.data[0].replyKey;
+						callback(data)
+					}else{
+						this.setClassify(["课程1"])
+					}
+				})
+			},
+			setClassify: function(data){
+				for (var i = 0; i < data.length; i++){
+					this.classifyList.push({name: data[i]})
+				}
 				this.$nextTick(componentHandler.upgradeAllRegistered)
 			},
-			saveClassify: function(){},
-			deleteClassify: function(index){
-				testData.splice(index, 1)
-				console.log(index)
+			getMessage: function(classify){
+				var data = {
+					classify: classify
+				},
+				self = this;
+
+				self.$http.get('/wxdata/get-reply-info', {data: data}).then(function(result){
+					self.messages = result.data;
+				})
+			}
+		},
+		route: {
+			activate: function(){
+				var self = this;
+				self.getClassify(self.setClassify);
+				self.getMessage("all")
 			}
 		}
 	}
-
 	module.exports = Message;
 </script>

@@ -9910,7 +9910,6 @@
 				this.shown = !this.shown;
 	
 				this.$http.get('/wxdata/get-wx-info').then(function (result) {
-	
 					var data = result.data[0];
 					if (data) {
 						this.isTure.getData = true;
@@ -10053,28 +10052,46 @@
 		},
 		methods: {
 			saveData: function saveData() {
-				var _this = this;
-	
+				this.saveStatus = true;
 				if (this.checkInput('cl') && this.checkInput('homework') && this.checkInput('score')) {
-					(function () {
-						var saveSuccess = function saveSuccess(obj) {
-							obj.saveStatus = false;
-						};
-	
-						var _saveSuccess = function _saveSuccess(obj) {
-							return function () {
-								saveSuccess(obj);
-							};
-						};
-	
-						_this.saveStatus = true;
-	
-						setTimeout(_saveSuccess(_this), 1000);
-					})();
+					var data = {
+						classStatus: {
+							isCheck: this.isCheck.cl,
+							cl: this.reply.cl
+						},
+						homeworkStatus: {
+							isCheck: this.isCheck.homework,
+							homework: this.reply.homework
+						},
+						scoreStatus: {
+							isCheck: this.isCheck.score,
+							score: this.reply.score
+						}
+					};
+					this.$http.post('/wxdata/save-wx-manage', { data: data }).then(function (err, result) {
+						this.saveStatus = false;
+					});
 				}
 			},
 			setData: function setData() {
-				// console.log(1)
+				var self = this;
+	
+				self.$http.get('/wxdata/get-wx-manage').then(function (result) {
+					if (result.data) {
+						var data = result.data;
+						self.isCheck = {
+							cl: data.cl.isOpen,
+							homework: data.homework.isOpen,
+							score: data.score.isOpen
+						};
+						self.reply = {
+							cl: data.cl.key,
+							homework: data.homework.key,
+							score: data.score.key
+						};
+						console.log(self.isCheck);
+					}
+				});
 			},
 			checkInput: function checkInput(tag) {
 				if (this.isCheck[tag] === true) {
@@ -10087,6 +10104,11 @@
 				}
 				return true;
 			}
+		},
+		route: {
+			activate: function activate() {
+				this.setData();
+			}
 		}
 	};
 	
@@ -10096,7 +10118,7 @@
 /* 20 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"manage-wrap\" id=\"manage\">\n\t\t<ul>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-class\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-class\" class=\"mdl-checkbox__input\" v-model=\"isCheck.cl\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看课表功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-class\" v-model=\"reply.cl\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-class\">课表</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.cl\">请输入关键字</div>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-homework\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-homework\" class=\"mdl-checkbox__input\" v-model=\"isCheck.homework\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看作业功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-homework\" v-model=\"reply.homework\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-homework\">作业</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.homework\">请输入关键字</div>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-score\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-score\" class=\"mdl-checkbox__input\" v-model=\"isCheck.score\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看成绩功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-score\" v-model=\"reply.score\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-score\">成绩</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.score\">请输入关键字</div>\n\t\t\t</li>\n\t\t</ul>\n\t\t<button class=\"mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect\" v-on:click=\"saveData\">保存</button>\n\t</div>\n\t<div class=\"manage-dialog mdl-color--white\" v-bind:class=\"{'show':saveStatus}\">\n\t\t<p>保存成功！</p>\n\t</div>";
+	module.exports = "<div class=\"manage-wrap\" id=\"manage\">\n\t\t<ul>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-class\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-class\" class=\"mdl-checkbox__input\" v-model=\"isCheck.cl\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看课表功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-class\" v-model=\"reply.cl\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-class\">课表</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.cl\">请输入关键字</div>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-homework\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-homework\" class=\"mdl-checkbox__input\" v-model=\"isCheck.homework\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看作业功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-homework\" v-model=\"reply.homework\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-homework\">作业</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.homework\">请输入关键字</div>\n\t\t\t</li>\n\t\t\t<li>\n\t\t\t\t<label class=\"mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect\" for=\"checkbox-score\">\n\t\t\t\t  <input type=\"checkbox\" id=\"checkbox-score\" class=\"mdl-checkbox__input\" v-model=\"isCheck.score\">\n\t\t\t\t  <span class=\"mdl-checkbox__label\">查看成绩功能</span>\n\t\t\t\t</label>\n\t\t\t\t<p>设置回复关键字：</p>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" id=\"reply-score\" v-model=\"reply.score\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" for=\"reply-score\">成绩</label>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-show=\"isInput.score\">请输入关键字</div>\n\t\t\t</li>\n\t\t</ul>\n\t\t<button class=\"mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect\" v-on:click=\"saveData\">保存</button>\n\t</div>\n\t<div class=\"manage-dialog mdl-color--white\" v-bind:class=\"{'show':saveStatus}\">\n\t\t<p>保存中</p>\n\t</div>";
 
 /***/ },
 /* 21 */
@@ -10158,7 +10180,7 @@
 	
 	
 	// module
-	exports.push([module.id, ".message-wrap{\n\t\tposition: relative;\n\t\tdisplay: block;\n\t\twidth: 80%;\n\t\tmargin: 0 auto;\n\t\tpadding-top: 5px;\n\t}\n\t#add-reply{\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tleft: 30px;\n\t}\n\t.message-wrap ul{\n\t\t-webkit-padding-start: 0px;\n\t\tmargin-top: 20px;\n\t}\n\t.message-wrap ul li{\n\t\tdisplay: inline-block;\n\t\tmargin: 10px 30px;\n\t\tlist-style: none;\n\t}\n\t.message-wrap ul li span{\n\t\tdisplay: inline-block;\n\t\tvertical-align: text-top;\n\t}\n\t.message-wrap .material-icons{\n\t\tcursor: pointer;\n\t}\n\t.message-wrap .mdl-textfield{\n\t\twidth: 100px;\n\t\tmargin: 0 10px 0 0;\n\t}\n\t.message-wrap .table-wrap{\n\t\tposition: relative;\n\t\tdisplay: block;\n\t\twidth: 100%;\n\t\tpadding: 0 30px;\n\t}\n\t.table-wrap .mdl-data-table{\n\t\tposition: relative;\n\t\ttable-layout:fixed;\n\t\twidth: 100%;\n\t}\n\t.table-wrap .mdl-data-table tr td:nth-child(1),\n\t.table-wrap .mdl-data-table tr th:nth-child(1){\n\t\twidth: 10%;\n\t}\n\t.table-wrap .mdl-data-table tr td:nth-child(2),\n\t.table-wrap .mdl-data-table tr th:nth-child(2){\n\t\twidth: 10%;\n\t}\n\t.table-wrap .mdl-data-table tr td:nth-child(3),\n\t.table-wrap .mdl-data-table tr th:nth-child(3){\n\t\twidth: 60%;\n\t\twhite-space: normal;\n\t\tword-wrap:break-word;\n\t}", ""]);
+	exports.push([module.id, ".message-wrap{\n\t\tposition: relative;\n\t\tdisplay: block;\n\t\twidth: 80%;\n\t\tmargin: 0 auto;\n\t\tpadding-top: 5px;\n\t}\n\t#add-reply{\n\t\tposition: absolute;\n\t\ttop: 10px;\n\t\tleft: 0px;\n\t}\n\t.message-wrap ul{\n\t\t-webkit-padding-start: 0px;\n\t\tmargin-top: 20px;\n\t}\n\t.message-wrap ul li{\n\t\tdisplay: inline-block;\n\t\tmargin: 10px 20px 10px 0;\n\t\tlist-style: none;\n\t}\n\t.message-wrap ul li span{\n\t\tdisplay: inline-block;\n\t\tvertical-align: text-top;\n\t}\n\t.message-wrap .material-icons{\n\t\tcursor: pointer;\n\t}\n\t.message-wrap .mdl-textfield{\n\t\twidth: 100px;\n\t\tmargin: 0 10px 0 0;\n\t}\n\t.message-wrap .table-wrap{\n\t\tposition: relative;\n\t\tdisplay: block;\n\t\twidth: 100%;\n\t\tpadding: 0;\n\t}\n\t.table-wrap ul li{\n\t\tmargin: 10px 20px;\n\t}\n\t.table-wrap .mdl-data-table{\n\t\tposition: relative;\n\t\ttable-layout:fixed;\n\t\twidth: 100%;\n\t}\n\t.table-wrap .mdl-data-table tr td:nth-child(1),\n\t.table-wrap .mdl-data-table tr th:nth-child(1){\n\t\twidth: 10%;\n\t}\n\t.table-wrap .mdl-data-table tr td:nth-child(2),\n\t.table-wrap .mdl-data-table tr th:nth-child(2){\n\t\twidth: 10%;\n\t}\n\t.table-wrap .mdl-data-table tr td:nth-child(3),\n\t.table-wrap .mdl-data-table tr th:nth-child(3){\n\t\twidth: 60%;\n\t\twhite-space: normal;\n\t\tword-wrap:break-word;\n\t}", ""]);
 	
 	// exports
 
@@ -10167,38 +10189,83 @@
 /* 24 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
-	var testData = [{ name: "课程1" }, { name: "课程2" }];
 	var Message = {
 		el: function el() {
 			return '#message';
 		},
 		data: function data() {
 			return {
-				classifyList: testData
+				classifyList: [],
+				messages: []
 			};
 		},
 		methods: {
 			addClassify: function addClassify() {
-				testData.push({ name: "课程3" });
+				this.classifyList.push({ name: "课程3" });
 				this.$nextTick(componentHandler.upgradeAllRegistered);
 			},
-			saveClassify: function saveClassify() {},
+			saveClassify: function saveClassify() {
+				var data = {
+					key: []
+				};
+				var length = this.classifyList.length;
+				for (var i = 0; i < length; i++) {
+					data.key.push(this.classifyList[i].name);
+				}
+				this.$http.post('/wxdata/save-reply-key', { data: data }).then(function (result) {
+					if (result.ok) {
+						console.log("success");
+					}
+				});
+			},
 			deleteClassify: function deleteClassify(index) {
-				testData.splice(index, 1);
-				console.log(index);
+				this.classifyList.splice(index, 1);
+				this.saveClassify();
+			},
+			getClassify: function getClassify(callback) {
+				this.$http.get('/wxdata/get-reply-key').then(function (result) {
+					if (result.data.length > 0) {
+						var data = result.data[0].replyKey;
+						callback(data);
+					} else {
+						this.setClassify(["课程1"]);
+					}
+				});
+			},
+			setClassify: function setClassify(data) {
+				for (var i = 0; i < data.length; i++) {
+					this.classifyList.push({ name: data[i] });
+				}
+				this.$nextTick(componentHandler.upgradeAllRegistered);
+			},
+			getMessage: function getMessage(classify) {
+				var data = {
+					classify: classify
+				},
+				    self = this;
+	
+				self.$http.get('/wxdata/get-reply-info', { data: data }).then(function (result) {
+					self.messages = result.data;
+				});
+			}
+		},
+		route: {
+			activate: function activate() {
+				var self = this;
+				self.getClassify(self.setClassify);
+				self.getMessage("all");
 			}
 		}
 	};
-	
 	module.exports = Message;
 
 /***/ },
 /* 25 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"message-wrap\" id=\"message\">\n\t\t<button class=\"mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab\" id=\"add-reply\" v-on:click=\"addClassify\"><i class=\"material-icons\">add</i></button>\n\t\t<div class=\"mdl-tooltip\" for=\"add-reply\">添加分类</div>\n\t\t<ul>\n\t\t\t<li v-for=\"item in classifyList\">\n\t\t\t\t<span>设置回复前缀：</span>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" v-bind:id=\"'reply' + $index\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" v-bind:for=\"'reply' + $index\">{{item.name}}</label>\n\t\t\t\t</div>\n\t\t\t\t<span class=\"mdl-color-text--grey-700\" v-bind:id=\"'classify-save-' + $index\"><i class=\"material-icons\">save</i></span>\n\t\t\t\t<span class=\"mdl-color-text--grey-700\" v-on:click=\"deleteClassify($index)\"><i class=\"material-icons\" v-bind:id=\"'classify-delete-' + $index\">delete</i></span>\n\t\t\t\t<div class=\"mdl-tooltip\" v-bind:for=\"'classify-save-' + $index\">保存</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-bind:for=\"'classify-delete-' + $index\">删除</div>\n\t\t\t</li>\n\t\t</ul>\n\t\t<div class=\"table-wrap\">\n\t\t\t<table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\">\n\t\t\t\t<thead>\n\t\t\t    \t<tr>\n\t\t\t      \t\t<th class=\"mdl-data-table__cell--non-numeric\">姓名</th>\n\t\t\t\t\t    <th class=\"mdl-data-table__cell--non-numeric\">学号</th>\n\t\t\t\t\t    <th class=\"mdl-data-table__cell--non-numeric\">回复内容</th>\n\t\t\t\t\t    <th class=\"mdl-data-table__cell--non-numeric\">\n\t\t\t\t\t    \t<span>分类</span>\n\t\t\t\t\t    \t<button id=\"demo-menu-lower-right\" class=\"mdl-button mdl-js-button mdl-button--icon\">\n\t\t\t\t\t\t\t\t<i class=\"material-icons\">keyboard_arrow_down</i>\n\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t<ul class=\"mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect\" for=\"demo-menu-lower-right\">\n\t\t\t\t\t\t\t  \t<li class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\">课程1</li>\n\t\t\t\t\t\t\t  \t<li class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\">课程2</li>\n\t\t\t\t\t\t\t  \t<li class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\">课程3</li>\n\t\t\t\t\t\t\t  \t<li class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\">课程4</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t    </th>\n\t\t\t\t    </tr>\n\t\t\t  \t</thead>\n\t\t\t  \t<tbody>\n\t\t\t    \t<tr>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">小明</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">12108080</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好!</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">闲聊</td>\n\t\t\t    \t</tr>\n\t\t\t    \t<tr>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">小明</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">12108080</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">闲聊</td>\n\t\t\t    \t</tr>\n\t\t\t    \t<tr>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">小明</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">12108080</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！老师好！</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">闲聊</td>\n\t\t\t    \t</tr>\n\t\t\t  \t</tbody>\n\t\t\t</table>\n\t\t</div>\n\t</div>";
+	module.exports = "<div class=\"message-wrap\" id=\"message\">\n\t\t<button class=\"mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab\" id=\"add-reply\" v-on:click=\"addClassify\"><i class=\"material-icons\">add</i></button>\n\t\t<div class=\"mdl-tooltip\" for=\"add-reply\">添加分类</div>\n\t\t<ul>\n\t\t\t<li v-for=\"item in classifyList\">\n\t\t\t\t<span>设置回复前缀：</span>\n\t\t\t\t<div class=\"mdl-textfield mdl-js-textfield\">\n\t\t\t\t    <input class=\"mdl-textfield__input\" type=\"text\" v-bind:id=\"'reply' + $index\" v-model=\"item.name\">\n\t\t\t\t    <label class=\"mdl-textfield__label\" v-bind:for=\"'reply' + $index\">{{item.name}}</label>\n\t\t\t\t</div>\n\t\t\t\t<span class=\"mdl-color-text--grey-700\" v-on:click=\"saveClassify($index)\"><i class=\"material-icons\" v-bind:id=\"'classify-save-' + $index\">save</i></span>\n\t\t\t\t<span class=\"mdl-color-text--grey-700\" v-on:click=\"deleteClassify($index)\"><i class=\"material-icons\" v-bind:id=\"'classify-delete-' + $index\">delete</i></span>\n\t\t\t\t<div class=\"mdl-tooltip\" v-bind:for=\"'classify-save-' + $index\">保存</div>\n\t\t\t\t<div class=\"mdl-tooltip\" v-bind:for=\"'classify-delete-' + $index\">删除</div>\n\t\t\t</li>\n\t\t</ul>\n\t\t<div class=\"table-wrap\">\n\t\t\t<table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\">\n\t\t\t\t<thead>\n\t\t\t    \t<tr>\n\t\t\t      \t\t<th class=\"mdl-data-table__cell--non-numeric\">姓名</th>\n\t\t\t\t\t    <th class=\"mdl-data-table__cell--non-numeric\">学号</th>\n\t\t\t\t\t    <th class=\"mdl-data-table__cell--non-numeric\">回复内容</th>\n\t\t\t\t\t    <th class=\"mdl-data-table__cell--non-numeric\">\n\t\t\t\t\t    \t<span>分类</span>\n\t\t\t\t\t    \t<button id=\"demo-menu-lower-right\" class=\"mdl-button mdl-js-button mdl-button--icon\">\n\t\t\t\t\t\t\t\t<i class=\"material-icons\">keyboard_arrow_down</i>\n\t\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\t<ul class=\"mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect\" for=\"demo-menu-lower-right\">\n\t\t\t\t\t\t\t  \t<li class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" v-on:click=\"getMessage('all')\">全部</li>\n\t\t\t\t\t\t\t  \t<li class=\"mdl-menu__item mdl-menu__item--full-bleed-divider\" v-for=\"item in classifyList\" v-on:click=\"getMessage(item.name)\">{{item.name}}</li>\n\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t    </th>\n\t\t\t\t    </tr>\n\t\t\t  \t</thead>\n\t\t\t  \t<tbody>\n\t\t\t    \t<tr v-for=\"item in messages\">\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">{{item.name}}</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">{{item.schoolNum}}</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">{{item.content}}</td>\n\t\t\t      \t\t<td class=\"mdl-data-table__cell--non-numeric\">{{item.classify}}</td>\n\t\t\t    \t</tr>\n\t\t\t  \t</tbody>\n\t\t\t</table>\n\t\t</div>\n\t</div>";
 
 /***/ },
 /* 26 */

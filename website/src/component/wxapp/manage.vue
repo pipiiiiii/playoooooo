@@ -103,7 +103,7 @@
 		<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" v-on:click="saveData">保存</button>
 	</div>
 	<div class="manage-dialog mdl-color--white" v-bind:class="{'show':saveStatus}">
-		<p>保存成功！</p>
+		<p>保存中</p>
 	</div>
 </template>
 
@@ -134,21 +134,46 @@
 		},
 		methods: {
 			saveData: function(){
+				this.saveStatus = true;
 				if(this.checkInput('cl') && this.checkInput('homework') && this.checkInput('score')){
-					this.saveStatus = true;
-					function saveSuccess(obj){
-						obj.saveStatus = false
-					}
-					function _saveSuccess(obj){
-						return function(){
-							saveSuccess(obj)
+					var data = {
+						classStatus: {
+							isCheck: this.isCheck.cl,
+							cl: this.reply.cl
+						},
+						homeworkStatus: {
+							isCheck: this.isCheck.homework,
+							homework: this.reply.homework,
+						},
+						scoreStatus: {
+							isCheck: this.isCheck.score,
+							score: this.reply.score
 						}
 					}
-					setTimeout(_saveSuccess(this),1000)
+					this.$http.post('/wxdata/save-wx-manage',{data:data}).then(function(err, result){
+						this.saveStatus = false
+					})
 				}
 			},
 			setData: function(){
-				// console.log(1)
+				var self = this;
+
+				self.$http.get('/wxdata/get-wx-manage').then(function(result){
+					if (result.data){
+						var data = result.data;
+						self.isCheck = {
+							cl: data.cl.isOpen,
+							homework: data.homework.isOpen,
+							score: data.score.isOpen
+						}
+						self.reply = {
+							cl: data.cl.key,
+							homework: data.homework.key,
+							score: data.score.key
+						}
+						console.log(self.isCheck)
+					}
+				})
 			},
 			checkInput: function(tag){
 				if (this.isCheck[tag] === true){
@@ -160,6 +185,11 @@
 					}
 				}
 				return true
+			}
+		},
+		route: {
+			activate: function(){
+				this.setData();
 			}
 		}
 	};
