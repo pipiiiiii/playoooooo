@@ -24,10 +24,10 @@ router.use('/interface/:appid', function(req, res, next){
 		next();
 	})
 });
-router.use('/interface/:appid', wechat(token).event(function(message, req, res, next){
-	var openId = message.FromUserName;
-		// api = new WechatAPI(appId, appSecret);
-		// console.log(api)
+router.use('/interface/:appid', wechat(token,wechat.event(function(message, req, res, next){
+	var openId = message.FromUserName,
+		api = new WechatAPI(appId, appSecret);
+		
   	if (message.Event == 'subscribe'){
   		var array = [{
   			"title": "点击此处进行绑定",
