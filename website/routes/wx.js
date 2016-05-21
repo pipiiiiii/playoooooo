@@ -24,9 +24,8 @@ router.use('/interface/:appid', function(req, res, next){
 		next();
 	})
 });
-router.use('/interface/:appid', wechat(token,function(req, res, next){
-	var message = req.weixin,
-		openId = message.FromUserName,
+router.use('/interface/:appid', wechat(token).event(function(message, req, res, next){
+	var openId = message.FromUserName,
 		api = new WechatAPI(appId, appSecret);
 
   	if (message.Event == 'subscribe'){
@@ -40,7 +39,11 @@ router.use('/interface/:appid', wechat(token,function(req, res, next){
   	}else if(message){
   		res.reply('请先绑定')
   	}
-}))
+}).text(function(message, req, res, next){
+	if(message){
+		res.reply("successful")
+	}
+}).middlewarify())
 
 router.use('/cms', function(req, res, next){
 	console.log(req.session)
