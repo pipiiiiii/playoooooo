@@ -43,7 +43,7 @@ router.use('/interface/:appid', wechat(token,wechat.event(function(message, req,
 	if(message){
 		res.reply("successful")
 	}
-}).middlewarify())
+}).middlewarify()))
 
 router.use('/cms', function(req, res, next){
 	console.log(req.session)
