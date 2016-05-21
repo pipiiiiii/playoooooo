@@ -17,17 +17,17 @@ var token,appId,appSecret;
 router.use('/interface/:appid', function(req, res, next){
 	var appid = req.params.appid;
 	
-	wxModel.getToken(appid, function(info){
+	wxModel.getInfo(appid, function(info){
 		req.wechat_token = info.token;
 		appId = info.appId;
 		appSecret = info.appSecret;
 		next();
 	})
 });
-router.use('/interface/:appid', wechat(token,wechat.event(function(message, req, res, next){
+router.use('/interface/:appid', wechat(token).event(function(message, req, res, next){
 	var openId = message.FromUserName,
 		api = new WechatAPI(appId, appSecret);
-		
+
   	if (message.Event == 'subscribe'){
   		var array = [{
   			"title": "点击此处进行绑定",
@@ -43,7 +43,7 @@ router.use('/interface/:appid', wechat(token,wechat.event(function(message, req,
 	if(message){
 		res.reply("successful")
 	}
-}).middlewarify()))
+}).middlewarify())
 
 router.use('/cms', function(req, res, next){
 	console.log(req.session)
