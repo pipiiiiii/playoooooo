@@ -35,7 +35,7 @@ router.use('/interface/:appid', wechat(token).event(function(message, req, res, 
   			"url": "www.qq.com",
   			"picurl": "zhishu.1njoy.com/app/assets/images/lang.jpg"
   		}]
-  		api.sendNews(openId, array)
+  		api.sendNews(openId, array,function(){res.end});
   	}else if(message){
   		res.reply('请先绑定')
   	}
