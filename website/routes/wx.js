@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var wechat = require('wechat');
+var WechatAPI = require('wechat-api');
 var wxModel = require('./../model/wxModel.js');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
@@ -12,24 +13,34 @@ router.use(session({
 	resave: false,
 	store: new MongoStore({	mongooseConnection: mongoose.connection })
 }))
-var token = '';
+var token,appId,appSecret;
 router.use('/interface/:appid', function(req, res, next){
 	var appid = req.params.appid;
 	
-	wxModel.getToken(appid, function(token){
-		req.wechat_token = token;
+	wxModel.getToken(appid, function(info){
+		req.wechat_token = info.token;
+		appId = info.appId;
+		appSecret = info.appSecret;
 		next();
 	})
 });
-router.use('/interface/:appid', wechat(token)
-  .text(function (message, req, res, next) {
-  	var message = req.weixin;
-  	if (message){
-  		res.reply(message.Content)
-  	}else{
-  		res.reply('error')
+router.use('/interface/:appid', wechat(token,function(req, res, next){
+	var message = req.weixin,
+		openId = message.FromUserName,
+		api = new WechatAPI(appId, appSecret);
+
+  	if (message.Event == 'subscribe'){
+  		var array = [{
+  			"title": "点击此处进行绑定",
+  			"description": "点击此处进入翻转课堂进行绑定",
+  			"url": "www.qq.com",
+  			"picurl": "zhishu.1njoy.com/app/assets/images/lang.jpg"
+  		}]
+  		api.sendNews(openId, array)
+  	}else if(message){
+  		res.reply('请先绑定')
   	}
-  }).middlewarify())
+}))
 
 router.use('/cms', function(req, res, next){
 	console.log(req.session)

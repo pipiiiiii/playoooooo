@@ -12,16 +12,22 @@ function WxModel(){
 	this.token = ''
 }
 
-WxModel.prototype.getToken = function(appid, callback){
+WxModel.prototype.getInfo = function(appid, callback){
 	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam),
-	    token = '',
+	    wxInfo = {},
 		self = this;
 	wxInfoModel.find({
 		appId: appid
 	}, function(err, result){
 		if (result.length > 0){
 			var data = result[0];
-			callback(data.token)
+
+			wxInfo = {
+				token: data.token,
+				appId: data.appId,
+				appSecret: '4886589b3a55dda203c85655879848de'
+			}
+			callback(wxInfo)
 		}else{
 			return
 		}

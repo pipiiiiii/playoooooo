@@ -44,11 +44,15 @@
 		data: function(){
 			return {
 				username: '',
-				password: ''
+				password: '',
+				isInput: true
 			}
 		},
 		methods: {
 			go: function(){
+				if (this.username == '' || this.password == ''){
+
+				}
 				this.$http.post('/wxapp/save-session', {}).then(function(){
 					window.location = "/wxapp/cms";
 				})
