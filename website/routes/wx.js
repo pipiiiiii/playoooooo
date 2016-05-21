@@ -27,7 +27,7 @@ router.use('/interface/:appid', function(req, res, next){
 router.use('/interface/:appid', wechat(token).event(function(message, req, res, next){
 	var openId = message.FromUserName,
 		api = new WechatAPI(appId, appSecret);
-		console.log(message)
+		console.log(api)
   	if (message.Event == 'subscribe'){
   		var array = [{
   			"title": "点击此处进行绑定",
@@ -35,7 +35,7 @@ router.use('/interface/:appid', wechat(token).event(function(message, req, res, 
   			"url": "www.qq.com",
   			"picurl": "zhishu.1njoy.com/app/assets/images/lang.jpg"
   		}]
-  		api.sendNews(openId, array,function(){res.end});
+  		api.sendNews(openId, array,function(){res.end()});
   	}else if(message){
   		res.reply('请先绑定')
   	}
