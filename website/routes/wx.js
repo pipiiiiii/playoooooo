@@ -25,7 +25,7 @@ router.use('/interface/:appid', function(req, res, next){
 	})
 });
 router.use('/interface/:appid', wechat(token).event(function(message, req, res, next){
-	var openId = message.FromUserName,
+	var openId = message.FromUserName;
 		// api = new WechatAPI(appId, appSecret);
 		// console.log(api)
   	if (message.Event == 'subscribe'){
