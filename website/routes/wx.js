@@ -27,7 +27,7 @@ router.use('/interface/:appid', function(req, res, next){
 router.use('/interface/:appid', wechat(token).event(function(message, req, res, next){
 	var openId = message.FromUserName,
 		api = new WechatAPI(appId, appSecret);
-
+		console.log(message)
   	if (message.Event == 'subscribe'){
   		var array = [{
   			"title": "点击此处进行绑定",
