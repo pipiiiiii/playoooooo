@@ -31,7 +31,7 @@ router.use('/interface/:appid', wechat(token).event(function(message, req, res, 
   		var array = [{
   			"title": "点击此处进行绑定",
   			"description": "点击此处进入翻转课堂进行绑定",
-  			"url": "http://www.qq.com",
+  			"url": "https://auth.1njoy.com/signin.html",
   			"picurl": "http://zhishu.1njoy.com/app/assets/images/lang.jpg"
   		}]
   		res.reply(array);
@@ -39,8 +39,16 @@ router.use('/interface/:appid', wechat(token).event(function(message, req, res, 
   		res.reply('请先绑定')
   	}
 }).text(function(message, req, res, next){
-	if(message){
-		res.reply("successful")
+	if(message.Content != ''){
+		var content = {
+			input: message.Content,
+			teacherId: info.teacherId
+		}
+		wxModel.analysisInput(content, dafunction(reply){
+
+		})
+	}else{
+		res.end();
 	}
 }).middlewarify())
 
