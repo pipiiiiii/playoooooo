@@ -58,7 +58,7 @@ WxModel.prototype.analysisInput = function(content, callback){
 	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
 		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
 			isType.reply(input, 1, function(){ toDo.reply(callback)}, function(){
-				
+
 			})
 		})
 	});
@@ -110,7 +110,7 @@ var isType = {
 			}
 		})
 	},
-	reply: function(input, id){
+	reply: function(input, id, suc, err){
 		var inputKey = input.split(":")[0];
 
 		getReply(function(result){
@@ -118,13 +118,13 @@ var isType = {
 				var keyArray = result.replyKey;
 				for (var i = 0, len = keyArray.length; i < len; i++){
 					if (keyArray[i] == inputKey){
-						return true
+						suc()
 					}else{
-						return false
+						err()
 					}
 				}
 			}else{
-				return false
+				err()
 			}
 		})
 	}
