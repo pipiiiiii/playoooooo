@@ -45,16 +45,7 @@ WxModel.prototype.getInfo = function(appid, callback){
 WxModel.prototype.analysisInput = function(content, callback){
 	var self = this,
 		input = content.input;
-	if (isType.bindClass(input)){
-		toDo.bindClass(callback);
-		console.log(1)
-	}else if (isType.useClass(input, callback)){
-		console.log(2)
-		toDo.useClass(callback);
-	}else if (isType.reply(input,content.teacherId)){
-		toDo.useClass(callback);
-		console.log(3)
-	}
+		
 	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
 		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
 			isType.reply(input, 1, function(){ toDo.reply(callback)}, function(){
