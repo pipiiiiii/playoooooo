@@ -49,7 +49,7 @@ WxModel.prototype.analysisInput = function(content, callback){
 	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
 		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
 			isType.reply(input, 1, function(){ toDo.reply(callback)}, function(){
-
+				callback('none')
 			})
 		})
 	});

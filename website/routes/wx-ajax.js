@@ -78,13 +78,12 @@ var wxManageScoreSchema = new mongoose.Schema({
 	isOpen: Boolean,
 	key: String
 })
-
+var wxManageModel = mongoose.model("wxmanage", wxManageSchema),
+	wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema),
+	wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema),
+	wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema);
 router.get('/get-wx-manage', function(req, res, next){
-	var wxManageModel = mongoose.model("wxmanage", wxManageSchema),
-		wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema),
-		wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema),
-		wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema),
-		manageData = {
+	var manageData = {
 			cl: {},
 			homework: {},
 			score: {}
@@ -125,11 +124,7 @@ router.get('/get-wx-manage', function(req, res, next){
 })
 
 router.post('/save-wx-manage', function(req, res, next){
-	var wxManageModel = mongoose.model("wxmanage", wxManageSchema),
-		wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema),
-		wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema),
-		wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema),
-		data = req.body.data,
+	var data = req.body.data,
 		count = 1,
 		manageStatus = {
 			teacherId: 1,
@@ -321,7 +316,7 @@ router.get('/get-reply-info', function(req, res, next){
 			var message = result;
 			
 			length = message.length;
-			
+
 			for(var i = 0; i < message.length; i++){
 				findStudent(message[i])
 			}

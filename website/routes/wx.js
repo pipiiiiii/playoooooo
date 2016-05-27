@@ -45,7 +45,11 @@ router.use('/interface/:appid', wechat(token).event(function(message, req, res, 
 			teacherId: 1
 		}
 		wxModel.analysisInput(content, function(reply){
-			res.reply(reply)
+			if(reply != 'none'){
+				res.reply(reply)
+			}else{
+				res.end()
+			}
 		})
 	}else{
 		res.end();
