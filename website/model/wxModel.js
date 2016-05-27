@@ -45,7 +45,7 @@ WxModel.prototype.getInfo = function(appid, callback){
 WxModel.prototype.analysisInput = function(content, callback){
 	var self = this,
 		input = content.input;
-		
+
 	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
 		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
 			isType.reply(input, 1, function(){ toDo.reply(callback)}, function(){
@@ -90,7 +90,7 @@ var isType = {
 				for (var item in list){
 					console.log(list[item],inputKey,list[item].isOpen)
 					if (list[item].key == inputKey && list[item].isOpen){
-						scu()
+						suc()
 					}else if(list[item].key == inputKey){
 						callback("该功能暂未开启")
 					}
