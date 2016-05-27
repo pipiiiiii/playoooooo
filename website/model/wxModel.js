@@ -21,10 +21,10 @@ function WxModel(){
 }
 // 获取公众号信息
 WxModel.prototype.getInfo = function(appid, callback){
-	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam1),
+	var wxInfoModel1 = mongoose.model("WxInfo", wxInfoScheam1),
 	    wxInfo = {},
 		self = this;
-	wxInfoModel.find({
+	wxInfoModel1.find({
 		appId: appid
 	}, function(err, result){
 		if (result.length > 0){
@@ -143,10 +143,10 @@ var wxManageScoreSchema1 = new mongoose.Schema({
 })
 // 获取公众号开放功能列表
 function getList(callback){
-	var wxManageModel = mongoose.model("wxmanage", wxManageSchema1),
-		wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema1),
-		wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema1),
-		wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema1),
+	var wxManageModel1 = mongoose.model("wxmanage", wxManageSchema1),
+		wxManageClassModel1 = mongoose.model("wxmanageclass", wxManageClassSchema1),
+		wxManageHomeworkModel1 = mongoose.model("wxmanagehomework", wxManageHomeworkSchema1),
+		wxManageScoreModel1 = mongoose.model("wxmanagescore", wxManageScoreSchema1),
 		manageData = {
 			cl: {},
 			homework: {},
@@ -161,22 +161,22 @@ function getList(callback){
 			count++
 		}
 	}
-	wxManageModel.find({
+	wxManageModel1.find({
 		teacherId: 1
 	}).exec(function(err, result){
 		if(result.length > 0){
 			var r = result[0];
-			wxManageClassModel.find({
+			wxManageClassModel1.find({
 				_id: r.classId
 			}).exec(function(err, result){
 				setData('cl',result[0])
 			})
-			wxManageHomeworkModel.find({
+			wxManageHomeworkModel1.find({
 				_id: r.homeworkId
 			}).exec(function(err, result){
 				setData('homework', result[0])
 			})
-			wxManageScoreModel.find({
+			wxManageScoreModel1.find({
 				_id: r.scoreId
 			}).exec(function(err, result){
 				setData("score", result[0])
@@ -192,9 +192,9 @@ var replyKeySchema1 = new mongoose.Schema({
 	replyKey: Array
 })
 function getReply(id, callback){
-	var replyKeyModel = mongoose.model("replykey", replyKeySchema1);
+	var replyKeyModel1 = mongoose.model("replykey", replyKeySchema1);
 
-	replyKeyModel.find({
+	replyKeyModel1.find({
 		teacherId: 1
 	}).exec(function(err, result){
 		callback(result[0])

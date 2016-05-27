@@ -296,7 +296,7 @@ router.get('/get-reply-info', function(req, res, next){
 
 	function findStudent(data){
 		studentModel.find({
-			studentId: data.studentId
+			studentId: 1
 		}).exec(function(err, result){
 			var r = result[0];
 			messages.push({
@@ -313,7 +313,7 @@ router.get('/get-reply-info', function(req, res, next){
 		})
 
 	}
-
+	console.log(data)
 	if (classify == "all"){
 		replyInfoModel.find({
 			teacherId: 1
