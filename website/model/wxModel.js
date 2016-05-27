@@ -60,6 +60,7 @@ var toDo = {
 		// httpRequest()
 	},
 	useClass: function(callback){
+		console.log("here")
 		var reply = {
 			"title": "html基础",
 			"description": "html基础内容",
@@ -87,6 +88,7 @@ var isType = {
 		getList(function(list){
 			if(list){
 				for (var item in list){
+					console.log(list[item])
 					if (list[item].key == inputKey && list[item].isOpen){
 						return true
 					}else if(list[item].key == inputKey){
