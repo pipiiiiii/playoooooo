@@ -60,7 +60,6 @@ var toDo = {
 		callback("绑定成功")
 	},
 	useClass: function(callback){
-		console.log("here")
 		var reply = [{
 			"title": "html基础",
 			"description": "html基础内容",
@@ -107,6 +106,7 @@ var isType = {
 		getReply(function(result){
 			if (result){
 				var keyArray = result.replyKey;
+				console.log(keyArray)
 				for (var i = 0, len = keyArray.length; i < len; i++){
 					if (keyArray[i] == inputKey){
 						suc()
