@@ -61,12 +61,12 @@ var toDo = {
 	},
 	useClass: function(callback){
 		console.log("here")
-		var reply = {
+		var reply = [{
 			"title": "html基础",
 			"description": "html基础内容",
 			"url": "https://zhishu.1njoy.com/app/#/56d54e535ed2ddf207516aab/lecture",
 			"picurl": "https://zhishu.1njoy.com/app/assets/images/lang.jpg"
-		}
+		}]
 		callback(reply)
 	},
 	reply: function(callback){
