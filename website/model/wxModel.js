@@ -87,7 +87,7 @@ var isType = {
 		getList(function(list){
 			if(list){
 				for (var item in list){
-					console.log(item, inputKey)
+					console.log(item.key, inputKey)
 					if (item.key == inputKey && item.isOpen){
 						return true
 					}else if(item.key == inputKey){
