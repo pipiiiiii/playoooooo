@@ -164,22 +164,22 @@ function getList(callback){
 			count++
 		}
 	}
-	wxManageModel1.find({
+	wxManageModel.find({
 		teacherId: 1
 	}).exec(function(err, result){
 		if(result.length > 0){
 			var r = result[0];
-			wxManageClassModel1.find({
+			wxManageClassModel.find({
 				_id: r.classId
 			}).exec(function(err, result){
 				setData('cl',result[0])
 			})
-			wxManageHomeworkModel1.find({
+			wxManageHomeworkModel.find({
 				_id: r.homeworkId
 			}).exec(function(err, result){
 				setData('homework', result[0])
 			})
-			wxManageScoreModel1.find({
+			wxManageScoreModel.find({
 				_id: r.scoreId
 			}).exec(function(err, result){
 				setData("score", result[0])
