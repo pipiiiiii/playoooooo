@@ -64,7 +64,7 @@
 	<div class="manage-wrap" id="manage">
 		<ul>
 			<li>
-				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :class="{is-checked: isCheck.cl}" for="checkbox-class">
+				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :class="{'is-checked': isCheck.cl}" for="checkbox-class">
 				  <input type="checkbox" id="checkbox-class" class="mdl-checkbox__input" v-model="isCheck.cl">
 				  <span class="mdl-checkbox__label">查看课表功能</span>
 				</label>
@@ -76,7 +76,7 @@
 				<div class="mdl-tooltip" v-show="isInput.cl">请输入关键字</div>
 			</li>
 			<li>
-				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-homework">
+				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :class="{'is-checked': isCheck.cl}"  for="checkbox-homework">
 				  <input type="checkbox" id="checkbox-homework" class="mdl-checkbox__input" v-model="isCheck.homework">
 				  <span class="mdl-checkbox__label">查看作业功能</span>
 				</label>
@@ -88,7 +88,7 @@
 				<div class="mdl-tooltip" v-show="isInput.homework">请输入关键字</div>
 			</li>
 			<li>
-				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-score">
+				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :class="{'is-checked': isCheck.cl}"  for="checkbox-score">
 				  <input type="checkbox" id="checkbox-score" class="mdl-checkbox__input" v-model="isCheck.score">
 				  <span class="mdl-checkbox__label">查看成绩功能</span>
 				</label>
