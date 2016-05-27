@@ -69,7 +69,7 @@ var toDo = {
 		callback(reply)
 	},
 	reply: function(callback){
-		callback("保存成功")
+		saveReply(callback)
 	}
 }
 // 分析输入内容
@@ -110,10 +110,9 @@ var isType = {
 				for (var i = 0, len = keyArray.length; i < len; i++){
 					if (keyArray[i] == inputKey){
 						suc()
-					}else{
-						err()
 					}
 				}
+				err()
 			}else{
 				err()
 			}
