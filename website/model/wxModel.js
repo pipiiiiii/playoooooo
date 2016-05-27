@@ -88,8 +88,9 @@ var isType = {
 		getList(function(list){
 			if(list){
 				for (var item in list){
-					console.log(list[item],inputKey,list[item].key == inputKey)
+					console.log(list[item],inputKey,list[item].isOpen)
 					if (list[item].key == inputKey && list[item].isOpen){
+						console.log(1)
 						return true
 					}else if(list[item].key == inputKey){
 						callback("该功能暂未开启")
