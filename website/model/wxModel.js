@@ -49,8 +49,8 @@ WxModel.prototype.analysisInput = function(content, callback){
 		toDo.bindClass(callback);
 		console.log(1)
 	}else if (isType.useClass(input, callback)){
-		toDo.useClass(callback);
 		console.log(2)
+		toDo.useClass(callback);
 	}else if (isType.reply(input,content.teacherId)){
 		toDo.useClass(callback);
 		console.log(3)
