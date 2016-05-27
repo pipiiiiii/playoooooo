@@ -42,7 +42,7 @@ router.use('/interface/:appid', wechat(token).event(function(message, req, res, 
 	if(message.Content != ''){
 		var content = {
 			input: message.Content,
-			teacherId: info.teacherId
+			teacherId: req.session.auth.teacherId
 		}
 		wxModel.analysisInput(content, function(reply){
 			res.reply(reply)

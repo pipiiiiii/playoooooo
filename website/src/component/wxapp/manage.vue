@@ -172,6 +172,7 @@
 							score: data.score.key
 						}
 						console.log(self.isCheck)
+						Vue.nextTick(componentHandler.upgradeAllRegistered)
 					}
 				})
 			},
