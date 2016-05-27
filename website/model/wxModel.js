@@ -195,7 +195,7 @@ var replyKeySchema1 = new mongoose.Schema({
 	replyKey: Array
 })
 var replyKeyModel1 = mongoose.model("replykey", replyKeySchema1);
-function getReply(id, callback){
+function getReply(callback){
 
 	replyKeyModel1.find({
 		teacherId: 1
