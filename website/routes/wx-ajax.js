@@ -78,10 +78,10 @@ var wxManageScoreSchema = new mongoose.Schema({
 	isOpen: Boolean,
 	key: String
 })
-var wxManageModel = mongoose.model("wxmanage", wxManageSchema),
-	wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema),
-	wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema),
-	wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema);
+// var wxManageModel = mongoose.model("wxmanage", wxManageSchema),
+// 	wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema),
+// 	wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema),
+// 	wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema);
 router.get('/get-wx-manage', function(req, res, next){
 	var manageData = {
 			cl: {},
@@ -252,7 +252,7 @@ var studentSchema = new mongoose.Schema({
 })
 
 router.get('/get-reply-key', function(req, res, next){
-	var replyKeyModel = mongoose.model("replykey", replyKeySchema);
+	// var replyKeyModel = mongoose.model("replykey", replyKeySchema);
 
 	replyKeyModel.find({
 		teacherId: 1
