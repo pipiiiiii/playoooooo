@@ -2,14 +2,14 @@ var mongoose = require('./mongoConnect.js'),
 	http = require('http');
 
 // 公众号基本信息Scheam
-var wxInfoScheam = new mongoose.Schema({
+var wxInfoScheam1 = new mongoose.Schema({
 	teacherId: Number,
 	appId: String,
 	token: String,
 	aesKey: String
 });
 // 学生基本信息Scheam
-var studentSchema = new mongoose.Schema({
+var studentSchema1 = new mongoose.Schema({
 	studentId: Number,
 	wxId: String,
 	name: String,
@@ -21,7 +21,7 @@ function WxModel(){
 }
 // 获取公众号信息
 WxModel.prototype.getInfo = function(appid, callback){
-	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam),
+	var wxInfoModel = mongoose.model("WxInfo", wxInfoScheam1),
 	    wxInfo = {},
 		self = this;
 	wxInfoModel.find({
@@ -116,37 +116,37 @@ var isType = {
 }
 /*
 	功能管理相关接口
-	wxManageSchema: 功能基本状态信息
-	wxManageClassSchema: 课表功能信息
-	wxManageHomeworkSchema: 作业功能信息
-	wxManageScoreSchema: 成绩功能信息
+	wxManageSchema1: 功能基本状态信息
+	wxManageClassSchema1: 课表功能信息
+	wxManageHomeworkSchema1: 作业功能信息
+	wxManageScoreSchema1: 成绩功能信息
 	get-wx-manage: 获取用户设置
 	save-wx-manage: 保存用户设置
  */ 
-var wxManageSchema = new mongoose.Schema({
+var wxManageSchema1 = new mongoose.Schema({
 	teacherId: Number,
 	classId: String,
 	homeworkId: String,
 	scoreId: String
 });
-var wxManageClassSchema = new mongoose.Schema({
+var wxManageClassSchema1 = new mongoose.Schema({
 	isOpen: Boolean,
 	key: String
 });
-var wxManageHomeworkSchema = new mongoose.Schema({
+var wxManageHomeworkSchema1 = new mongoose.Schema({
 	isOpen: Boolean,
 	key: String
 });
-var wxManageScoreSchema = new mongoose.Schema({
+var wxManageScoreSchema1 = new mongoose.Schema({
 	isOpen: Boolean,
 	key: String
 })
 // 获取公众号开放功能列表
 function getList(callback){
-	var wxManageModel = mongoose.model("wxmanage", wxManageSchema),
-		wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema),
-		wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema),
-		wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema),
+	var wxManageModel = mongoose.model("wxmanage", wxManageSchema1),
+		wxManageClassModel = mongoose.model("wxmanageclass", wxManageClassSchema1),
+		wxManageHomeworkModel = mongoose.model("wxmanagehomework", wxManageHomeworkSchema1),
+		wxManageScoreModel = mongoose.model("wxmanagescore", wxManageScoreSchema1),
 		manageData = {
 			cl: {},
 			homework: {},
@@ -187,12 +187,12 @@ function getList(callback){
 	})
 }
 // 获取回复key
-var replyKeySchema = new mongoose.Schema({
+var replyKeySchema1 = new mongoose.Schema({
 	teacherId: Number,
 	replyKey: Array
 })
 function getReply(id, callback){
-	var replyKeyModel = mongoose.model("replykey", replyKeySchema);
+	var replyKeyModel = mongoose.model("replykey", replyKeySchema1);
 
 	replyKeyModel.find({
 		teacherId: 1
