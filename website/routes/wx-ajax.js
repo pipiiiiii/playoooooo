@@ -321,7 +321,7 @@ router.get('/get-reply-info', function(req, res, next){
 			var message = result;
 			
 			length = message.length;
-			console.log(message)
+			
 			for(var i = 0; i < message.length; i++){
 				findStudent(message[i])
 			}
