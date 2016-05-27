@@ -64,7 +64,7 @@
 	<div class="manage-wrap" id="manage">
 		<ul>
 			<li>
-				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-class">
+				<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" :class="{is-checked: isCheck.cl}" for="checkbox-class">
 				  <input type="checkbox" id="checkbox-class" class="mdl-checkbox__input" v-model="isCheck.cl">
 				  <span class="mdl-checkbox__label">查看课表功能</span>
 				</label>
@@ -172,7 +172,6 @@
 							score: data.score.key
 						}
 						console.log(self.isCheck)
-						Vue.nextTick(componentHandler.upgradeAllRegistered)
 					}
 				})
 			},
