@@ -57,7 +57,13 @@ var toDo = {
 		// httpRequest()
 	},
 	useClass: function(callback){
-		// httpRequest()
+		var reply = {
+			"title": "html基础",
+			"description": "html基础内容",
+			"url": "https://zhishu.1njoy.com/app/#/56d54e535ed2ddf207516aab/lecture",
+			"picurl": "https://zhishu.1njoy.com/app/assets/images/lang.jpg"
+		}
+		callback(reply)
 	},
 	reply: function(callback){
 		saveReply(callback)
@@ -196,7 +202,7 @@ function getReply(id, callback){
 }
 // 存储reply
 function saveReply(callback){
-
+	callback("保存成功")
 }
 // 封装http请求
 function httpRequest(method, path, data, callback){
