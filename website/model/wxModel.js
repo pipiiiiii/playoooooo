@@ -55,11 +55,18 @@ WxModel.prototype.analysisInput = function(content, callback){
 		toDo.useClass(callback);
 		console.log(3)
 	}
+	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
+		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
+			isType.reply(input, 1, function(){ toDo.reply(callback)}, function(){
+				
+			})
+		})
+	});
 }
 // 输入处理函数
 var toDo = {
 	bindClass: function(callback){
-		// httpRequest()
+		callback("绑定成功")
 	},
 	useClass: function(callback){
 		console.log("here")
@@ -77,14 +84,14 @@ var toDo = {
 }
 // 分析输入内容
 var isType = {
-	bindClass: function(input){
+	bindClass: function(input, suc, err){
 		var reg = /^[0-9a-zA-Z]{6}$/;
 
-		if (reg.test(input)) return true
+		if (reg.test(input)) suc();
 
-		return false
+		err();
 	},
-	useClass: function(input, callback){
+	useClass: function(input, callback, suc, err){
 		var inputKey = input.slice(0, 2);
 
 		getList(function(list){
@@ -92,15 +99,15 @@ var isType = {
 				for (var item in list){
 					console.log(list[item],inputKey,list[item].isOpen)
 					if (list[item].key == inputKey && list[item].isOpen){
-						console.log(1)
-						return true
+						scu()
 					}else if(list[item].key == inputKey){
 						callback("该功能暂未开启")
 					}
 				}
-				return false
+				err()
+			}else{
+				err()
 			}
-			return false
 		})
 	},
 	reply: function(input, id){
