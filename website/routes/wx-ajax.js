@@ -262,7 +262,7 @@ router.get('/get-reply-key', function(req, res, next){
 })
 
 router.post('/save-reply-key', function(req, res, next){
-	var replyKeyModel = mongoose.model("replykey", replyKeySchema),
+	// var replyKeyModel = mongoose.model("replykey", replyKeySchema),
 		data = req.body.data,
 		replyKeyInfo = {
 			teacherId: 1,
@@ -280,8 +280,7 @@ router.post('/save-reply-key', function(req, res, next){
 })
 
 router.get('/get-reply-info', function(req, res, next){
-	var replyInfoModel = mongoose.model("replyInfo", replyInfoSchema),
-		studentModel = mongoose.model("student", studentSchema);
+	var studentModel = mongoose.model("student", studentSchema);
 
 	var data = req.query.data
 		classify = data.classify,

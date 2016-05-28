@@ -48,7 +48,7 @@ WxModel.prototype.analysisInput = function(content, callback){
 
 	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
 		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
-			isType.reply(input, 1, function(){ toDo.reply(callback)}, function(){
+			isType.reply(input, 1, function(){ toDo.reply(input,callback)}, function(){
 				callback('none')
 			})
 		})
@@ -68,8 +68,14 @@ var toDo = {
 		}]
 		callback(reply)
 	},
-	reply: function(callback){
-		saveReply(callback)
+	reply: function(input, callback){
+		var replyInfo = {
+			classify: input.split(":")[0],
+			content: input.split(":")[1],
+			teacherId: 1,
+			sutdentId: 1
+		}
+		saveReply(replyInfo, callback)
 	}
 }
 // 分析输入内容
@@ -197,6 +203,7 @@ var replyKeySchema1 = new mongoose.Schema({
 	replyKey: Array
 })
 replyKeyModel = mongoose.model("replykey", replyKeySchema1);
+replyInfoModel = mongoose.model("replyInfo", replyInfoSchema);
 function getReply(callback){
 
 	replyKeyModel.find({
@@ -206,7 +213,10 @@ function getReply(callback){
 	})
 }
 // 存储reply
-function saveReply(callback){
+function saveReply(info, callback){
+	var replyInfoEntity = new replyInfoModel(info);
+	replyInfoEntity.save();
+	
 	callback("保存成功")
 }
 // 封装http请求
