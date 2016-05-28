@@ -54,6 +54,45 @@ WxModel.prototype.analysisInput = function(content, callback){
 		})
 	});
 }
+// 帮助菜单
+WxModel.prototype.replyHelp = function(callback){
+	var info = [],item;
+	getList(function(result){
+		for (var i in result){
+			if(result[i].isOpen){
+				var str = '回复“' + result[i].key + '"可以获得' + result[i].key
+				item = {
+					title: str,
+					description: str,
+					url: "",
+					picurl: ""
+				}
+				info.push(item)
+			}
+		}
+	})
+	getReply(function(result){
+		if (result){
+			var keyArray = result.replyKey;
+			for (var i = 0, len = keyArray.length; i < len; i++){
+				if (keyArray[i] == inputKey){
+					var str = '回复“' + keyArray[i] + ':"+内容，即可让教师看到';
+					item = {
+						title: str,
+						description: str,
+						url: "",
+						picurl: ""
+					}
+					info.push(item)
+				}
+			}
+		}
+	})
+	callback(info)
+}
+function pushHelp(){
+
+}
 // 输入处理函数
 var toDo = {
 	bindClass: function(callback){
@@ -112,7 +151,7 @@ var isType = {
 		getReply(function(result){
 			if (result){
 				var keyArray = result.replyKey;
-				console.log(keyArray)
+				
 				for (var i = 0, len = keyArray.length; i < len; i++){
 					if (keyArray[i] == inputKey){
 						suc()
