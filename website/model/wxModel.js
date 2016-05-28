@@ -202,8 +202,14 @@ var replyKeySchema1 = new mongoose.Schema({
 	teacherId: Number,
 	replyKey: Array
 })
+var replyInfoSchema1 = new mongoose.Schema({
+	teacherId: Number,
+	content: String,
+	studentId: Number,
+	classify: String
+})
 replyKeyModel = mongoose.model("replykey", replyKeySchema1);
-replyInfoModel = mongoose.model("replyInfo", replyInfoSchema);
+replyInfoModel = mongoose.model("replyInfo", replyInfoSchema1);
 function getReply(callback){
 
 	replyKeyModel.find({
@@ -216,7 +222,7 @@ function getReply(callback){
 function saveReply(info, callback){
 	var replyInfoEntity = new replyInfoModel(info);
 	replyInfoEntity.save();
-	
+
 	callback("保存成功")
 }
 // 封装http请求
