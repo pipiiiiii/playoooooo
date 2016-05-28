@@ -70,25 +70,25 @@ WxModel.prototype.replyHelp = function(callback){
 				info.push(item)
 			}
 		}
-	})
-	getReply(function(result){
-		if (result){
-			var keyArray = result.replyKey;
-			for (var i = 0, len = keyArray.length; i < len; i++){
-				if (keyArray[i]){
-					var str = '回复“' + keyArray[i] + ':"+内容，即可让教师看到';
-					item = {
-						title: str,
-						description: str,
-						url: "",
-						picurl: ""
+		getReply(function(result){
+			if (result){
+				var keyArray = result.replyKey;
+				for (var i = 0, len = keyArray.length; i < len; i++){
+					if (keyArray[i]){
+						var str = '回复“' + keyArray[i] + ':"+内容，即可让教师看到';
+						item = {
+							title: str,
+							description: str,
+							url: "",
+							picurl: ""
+						}
+						info.push(item)
 					}
-					info.push(item)
 				}
 			}
-		}
+			callback(info)
+		})
 	})
-	callback(info)
 }
 function pushHelp(){
 
