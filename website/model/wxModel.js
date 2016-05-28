@@ -47,7 +47,7 @@ WxModel.prototype.analysisInput = function(content, callback){
 		input = content.input;
 
 	isType.bindClass(input, function(){ toDo.bindClass(callback)}, function(){
-		isType.useClass(input, callback, function(){ toDo.useClass(callback) }, function(){
+		isType.useClass(input, callback, function(){ toDo.useClass(input, callback) }, function(){
 			isType.reply(input, 1, function(){ toDo.reply(input,callback)}, function(){
 				callback('none')
 			})
@@ -98,13 +98,23 @@ var toDo = {
 	bindClass: function(callback){
 		callback("绑定成功")
 	},
-	useClass: function(callback){
-		var reply = [{
-			"title": "html基础",
-			"description": "html基础内容",
-			"url": "https://zhishu.1njoy.com/app/#/56d54e535ed2ddf207516aab/lecture",
-			"picurl": "https://zhishu.1njoy.com/app/assets/images/lang.jpg"
-		}]
+	useClass: function(input, callback){
+		if (input == '课表'){
+			var reply = [{
+				"title": "html基础",
+				"description": "html基础内容",
+				"url": "https://zhishu.1njoy.com/app/#/56d54e535ed2ddf207516aab/lecture",
+				"picurl": "https://zhishu.1njoy.com/app/assets/images/lang.jpg"
+			}]
+		}else if(input == '作业'){
+			var reply = [{
+				"title": "html基础",
+				"description": "html基础内容",
+				"url": "https://zhishu.1njoy.com/app/#/56d54e535ed2ddf207516aab/assignment",
+				"picurl": "https://zhishu.1njoy.com/app/assets/images/lang.jpg"
+			}]
+		}
+		
 		callback(reply)
 	},
 	reply: function(input, callback){
