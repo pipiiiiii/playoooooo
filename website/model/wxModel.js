@@ -75,7 +75,7 @@ WxModel.prototype.replyHelp = function(callback){
 		if (result){
 			var keyArray = result.replyKey;
 			for (var i = 0, len = keyArray.length; i < len; i++){
-				if (keyArray[i] == inputKey){
+				if (keyArray[i]){
 					var str = '回复“' + keyArray[i] + ':"+内容，即可让教师看到';
 					item = {
 						title: str,
