@@ -78,7 +78,7 @@
 <template>
 	<div id="bind">
 		<div class="bind-content">
-			<p>您还未设置公众号信息，请先设置信息</p>
+			<p>{{bindText}}</p>
 			<button class="mdl-botton mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" v-on:click="changeDialog">点击设置信息</button>
 		</div>
 		<div class="bind-dialog" v-show="shown">
@@ -140,7 +140,8 @@
 					token: false,
 					key: false,
 					getData: false
-				}
+				},
+				bindText: '您已经绑定过微信公众号信息'
 			}
 		},
 		methods: {
@@ -177,7 +178,8 @@
 						console.log(this)
 						if(result.ok){
 							this.loading = false;
-							this.url = "www.playoooooo.com/wxapp?" + this.appid
+							this.url = "www.playoooooo.com/wxapp/interface/" + this.appid;
+							this.bindText = '您已经绑定过微信公众号信息'
 						}
 					})
 				}		
